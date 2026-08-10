@@ -1,0 +1,59 @@
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Build results
+[bB]in/
+[oO]bj/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+
+# Visual Studio cache/options
+*.cache
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+
+# Rider
+.idea/
+*.DotSettings.user
+
+# Publish outputs
+publish/
+*.publishsettings
+
+# NuGet
+*.nupkg
+.nuget/packages/
+packages/
+
+# Runtime files
+*.pidb
+*.pdb
+*.mdb
+*.cache
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Visual Studio Code workspace files
+.vscode/
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Ignore temporary files
+*.rsp
+*.tmp
+*~
