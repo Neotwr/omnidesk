@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using RemoteAccessUtil.Models;
+using RemoteAccessUtil.Services.Abstractions;
+using RemoteAccessUtil.Services.Implementations;
 
 namespace RemoteAccessUtil
 {
@@ -10,12 +13,20 @@ namespace RemoteAccessUtil
     /// </summary>
     public partial class GruposWindow : Window
     {
-        public GruposWindow(List<GrupoAD> grupos, string tituloJanela, string? descricao = null)
+        private readonly IGrupoComparerService _grupoComparerService;
+
+        public GruposWindow(
+            List<GrupoAD> grupos,
+            string tituloJanela,
+            string? descricao = null,
+            IGrupoComparerService? grupoComparerService = null)
         {
             InitializeComponent();
+            _grupoComparerService = grupoComparerService ?? new GrupoComparerService();
 
             dgGrupos.ItemsSource = grupos;
-            this.Title = $"{tituloJanela} (Total: {grupos.Count})";
+            Title = $"{tituloJanela} (Total: {grupos.Count})";
+
             if (descricao != null)
             {
                 lblDescricao.Content = descricao;
@@ -25,7 +36,6 @@ namespace RemoteAccessUtil
         private void TxtBusca_TextChanged(object sender, TextChangedEventArgs e)
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(dgGrupos.ItemsSource);
-
             if (view == null) return;
 
             string filtro = txtBusca.Text;
@@ -36,18 +46,7 @@ namespace RemoteAccessUtil
             }
             else
             {
-                filtro = filtro.ToLower();
-                view.Filter = item =>
-                {
-                    GrupoAD? grupo = item as GrupoAD;
-
-                    if (grupo == null) return false;
-
-                    bool nomeBate = grupo.Nome != null && grupo.Nome.ToLower().Contains(filtro);
-                    bool descBate = grupo.Descricao != null && grupo.Descricao.ToLower().Contains(filtro);
-
-                    return nomeBate || descBate;
-                };
+                view.Filter = item => item is GrupoAD grupo && _grupoComparerService.FiltrarGrupo(grupo, filtro);
             }
         }
     }

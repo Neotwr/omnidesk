@@ -1,66 +1,72 @@
-﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using RemoteAccessUtil.Models;
+using RemoteAccessUtil.Services.Abstractions;
+using RemoteAccessUtil.Services.Implementations;
 
 namespace RemoteAccessUtil
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Lógica de interação para MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IActiveDirectoryService _adService;
+        private readonly IRemoteAccessService _remoteAccessService;
+        private readonly IGrupoComparerService _grupoComparerService;
+
         public MainWindow()
+            : this(new ActiveDirectoryService(), new RemoteAccessService(), new GrupoComparerService())
         {
-            InitializeComponent();
         }
 
-        public ActiveDirectoryHelper adHelper = new();
-
-        private void StartRemoteAccess(string target)
+        public MainWindow(
+            IActiveDirectoryService adService,
+            IRemoteAccessService remoteAccessService,
+            IGrupoComparerService grupoComparerService)
         {
-            var psi = new ProcessStartInfo
-            {
-                FileName = "msra.exe",
-                Arguments = $"/offerra {target}",
-                UseShellExecute = true
-            };
-
-            try
-            {
-                Process.Start(psi);
-            }
-            catch (System.ComponentModel.Win32Exception ex)
-            {
-                MessageBox.Show($"Erro ao iniciar msra.exe: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            InitializeComponent();
+            _adService = adService;
+            _remoteAccessService = remoteAccessService;
+            _grupoComparerService = grupoComparerService;
         }
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtConnect.Text)) return;
-
-            StartRemoteAccess(txtConnect.Text);
+            ExecutarAcessoRemoto();
         }
+
         private void BxtConnect_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtConnect.Text)) return;
-
             if (e.Key == System.Windows.Input.Key.Enter && !e.IsRepeat)
             {
                 e.Handled = true;
-                StartRemoteAccess(txtConnect.Text);
+                ExecutarAcessoRemoto();
+            }
+        }
+
+        private void ExecutarAcessoRemoto()
+        {
+            try
+            {
+                _remoteAccessService.IniciarAssistencialRemota(txtConnect.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro no Acesso Remoto", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private async void BtnSearchA_Click(object sender, RoutedEventArgs e)
         {
-            await RealizarBuscaEExibirAsync(txtUserA.Text, btnSearchA);    
+            await RealizarBuscaEExibirAsync(txtUserA.Text, btnSearchA);
         }
 
         private async void BtnSearchB_Click(object sender, RoutedEventArgs e)
         {
             await RealizarBuscaEExibirAsync(txtUserB.Text, btnSearchB);
         }
+
         private async void BtnComparar_Click(object sender, RoutedEventArgs e)
         {
             string userA = txtUserA.Text;
@@ -76,22 +82,17 @@ namespace RemoteAccessUtil
 
             try
             {
-                Task<List<GrupoAD>> tarefaBuscaA = adHelper.ObterGruposDoUsuarioAsync(userA);
-                Task<List<GrupoAD>> tarefaBuscaRef = adHelper.ObterGruposDoUsuarioAsync(userRef);
+                Task<List<GrupoAD>> tarefaBuscaA = _adService.ObterGruposDoUsuarioAsync(userA);
+                Task<List<GrupoAD>> tarefaBuscaRef = _adService.ObterGruposDoUsuarioAsync(userRef);
 
                 await Task.WhenAll(tarefaBuscaA, tarefaBuscaRef);
 
                 List<GrupoAD> gruposUser = tarefaBuscaA.Result;
                 List<GrupoAD> gruposRef = tarefaBuscaRef.Result;
 
-                List<GrupoAD> diferencaRefparaUser = gruposRef
-                    .Where(grupoRef => !gruposUser.Any(grupoUser => grupoUser.Nome.Equals(grupoRef.Nome, StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
+                ComparacaoGruposResultado resultado = _grupoComparerService.CompararGrupos(userA, gruposUser, userRef, gruposRef);
 
-                string titulo = $"Grupos que *{userRef}* possui e faltam em *{userA}*";
-                string textoExplicativo = $"Estes são os grupos que faltam para o user {userA}";
-
-                GruposWindow novaJanela = new(diferencaRefparaUser, titulo, textoExplicativo);
+                GruposWindow novaJanela = new(resultado.GruposFaltantes, resultado.TituloJanela, resultado.TextoExplicativo, _grupoComparerService);
                 novaJanela.Show();
             }
             catch (Exception ex)
@@ -103,8 +104,7 @@ namespace RemoteAccessUtil
                 btnComparar.IsEnabled = true;
             }
         }
-        
-        // helpers ----------------------
+
         private async Task RealizarBuscaEExibirAsync(string nomeUsuario, Button botaoChamador)
         {
             if (string.IsNullOrWhiteSpace(nomeUsuario))
@@ -117,21 +117,20 @@ namespace RemoteAccessUtil
 
             try
             {
-                List<GrupoAD> grupos = await adHelper.ObterGruposDoUsuarioAsync(nomeUsuario);
+                List<GrupoAD> grupos = await _adService.ObterGruposDoUsuarioAsync(nomeUsuario);
 
                 string desc = $"Grupos de: {nomeUsuario}";
-                GruposWindow novaJanela = new(grupos, desc);
+                GruposWindow novaJanela = new(grupos, desc, null, _grupoComparerService);
                 novaJanela.Show();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro na busca", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Erro na Busca", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 botaoChamador.IsEnabled = true;
             }
         }
-
     }
 }
