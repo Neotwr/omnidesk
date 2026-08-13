@@ -6,17 +6,25 @@ namespace RemoteAccessUtil.Services.Implementations
 {
     public class RemoteAccessService : IRemoteAccessService
     {
-        public void IniciarAssistencialRemota(string destino)
+        public void IniciarAssistencialRemota(string destino, bool type)
         {
             if (string.IsNullOrWhiteSpace(destino))
             {
                 throw new ArgumentException("Informe o patrimônio ou endereço IP.", nameof(destino));
             }
 
+            string fileName = type
+                    ? "msra.exe"
+                    : "mstsc.exe";
+
+            string arguments = type
+                ? $"/offerra {destino.Trim()}"
+                : $"/v:{destino.Trim()} /admin";
+
             var psi = new ProcessStartInfo
             {
-                FileName = "msra.exe",
-                Arguments = $"/offerra {destino.Trim()}",
+                FileName = fileName,
+                Arguments = arguments,
                 UseShellExecute = true
             };
 
@@ -26,7 +34,7 @@ namespace RemoteAccessUtil.Services.Implementations
             }
             catch (Win32Exception ex)
             {
-                throw new InvalidOperationException($"Erro ao iniciar msra.exe: {ex.Message}", ex);
+                throw new InvalidOperationException($"Erro ao iniciar {fileName}: {ex.Message}", ex);
             }
         }
     }

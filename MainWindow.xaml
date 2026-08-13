@@ -9,22 +9,48 @@
     <Grid>
         <TabControl >
             <TabItem Header="Acesso remoto">
-                <StackPanel>
-                    <Label
-                        Content="Insira o patrimônio ou IP"
-                        Height="28" Width="150"/>
-                    <TextBox
-                        x:Name="txtConnect"
-                        Height="26" Width="188"
-                        KeyDown="BxtConnect_KeyDown"/>
-                    <Button
-                        x:Name="btnConnect"
-                        Content="Conectar"
-                        Height="27" 
-                        Width="114"
-                        Click="BtnConnect_Click"
-                        Margin="0 4 0 0"/>
-                </StackPanel>
+                <Grid
+                    RowDefinitions="26, 26, 26"
+                    VerticalAlignment="Top"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Center">
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                        <Label
+                            Content="Insira o patrimônio ou IP"/>
+                    </StackPanel>
+                    
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Grid.Row="1">
+                        <TextBox
+                            x:Name="txtConnect"
+                            Width="150"
+                            Margin="0 0 10 0"
+                            KeyDown="BxtConnect_KeyDown"/>
+                        <Button
+                            x:Name="btnConnect"
+                            Content="Conectar"
+                            Click="BtnConnect_Click"
+                            Width="62"
+                            Grid.Column="2"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <RadioButton
+                            x:Name="rbMsra"
+                            Content="MSRA"
+                            IsChecked="True"
+                            GroupName="AccessOption"/>
+                        <RadioButton
+                            x:Name="rbRdp"
+                            Margin="15 0 0 0"
+                            Content="RDP"
+                            GroupName="AccessOption"/>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Grupos">
                 <Grid

@@ -49,7 +49,7 @@ namespace RemoteAccessUtil
         {
             try
             {
-                _remoteAccessService.IniciarAssistencialRemota(txtConnect.Text);
+                _remoteAccessService.IniciarAssistencialRemota(txtConnect.Text, rbMsra.IsChecked ?? false);
             }
             catch (Exception ex)
             {

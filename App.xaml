@@ -16,6 +16,11 @@
         <Style TargetType="Label">
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-        
+
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+
     </Application.Resources>
 </Application>

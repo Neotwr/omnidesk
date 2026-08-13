@@ -2,6 +2,6 @@ namespace RemoteAccessUtil.Services.Abstractions
 {
     public interface IRemoteAccessService
     {
-        void IniciarAssistencialRemota(string destino);
+        void IniciarAssistencialRemota(string destino, bool type);
     }
 }
