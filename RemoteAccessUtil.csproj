@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -16,7 +16,7 @@
 	<SelfContained>true</SelfContained>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,46 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="10.0.10" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="sapnco">
+			<HintPath>sapnco.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="sapnco_utils">
+			<HintPath>sapnco_utils.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+	</ItemGroup>
+
+  <!-- Remove legacy .NET Framework SAP assemblies from WPF XAML Markup compilation to avoid WmiConfigurationAttribute resolution failure -->
+  <Target Name="FilterSapFromMarkupCompilePass1" BeforeTargets="MarkupCompilePass1">
+    <ItemGroup>
+      <_SapReferencePath Include="@(ReferencePath)" Condition="'%(FileName)' == 'sapnco' or '%(FileName)' == 'sapnco_utils'" />
+      <ReferencePath Remove="@(_SapReferencePath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="RestoreSapAfterMarkupCompilePass1" AfterTargets="MarkupCompilePass1">
+    <ItemGroup>
+      <ReferencePath Include="@(_SapReferencePath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="FilterSapFromMarkupCompilePass2" BeforeTargets="MarkupCompilePass2">
+    <ItemGroup>
+      <ReferencePath Remove="@(_SapReferencePath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="RestoreSapAfterMarkupCompilePass2" AfterTargets="MarkupCompilePass2">
+    <ItemGroup>
+      <ReferencePath Include="@(_SapReferencePath)" />
+    </ItemGroup>
+  </Target>
 
 </Project>

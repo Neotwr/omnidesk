@@ -4,7 +4,7 @@ namespace RemoteAccessUtil.Services.Abstractions
 {
     public interface IGrupoComparerService
     {
-        ComparacaoGruposResultado CompararGrupos(string usuarioAlvo, List<GrupoAD> gruposAlvo, string usuarioReferencia, List<GrupoAD> gruposReferencia);
-        bool FiltrarGrupo(GrupoAD grupo, string filtro);
+        ComparacaoGruposResultado CompararGrupos(string usuarioAlvo, List<Grupos> gruposAlvo, string usuarioReferencia, List<Grupos> gruposReferencia);
+        bool FiltrarGrupo(Grupos grupo, string filtro);
     }
 }

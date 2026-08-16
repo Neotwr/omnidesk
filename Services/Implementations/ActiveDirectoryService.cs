@@ -1,44 +1,33 @@
-using System.DirectoryServices.AccountManagement;
 using RemoteAccessUtil.Models;
 using RemoteAccessUtil.Services.Abstractions;
+using System.DirectoryServices.AccountManagement;
 
 namespace RemoteAccessUtil.Services.Implementations
 {
     public class ActiveDirectoryService : IActiveDirectoryService
     {
-        public async Task<List<GrupoAD>> ObterGruposDoUsuarioAsync(string nomeUsuario)
+        public async Task<List<Grupos>> ObterGruposDoUsuarioAsync(string nomeUsuario)
         {
-            if (string.IsNullOrWhiteSpace(nomeUsuario))
-            {
-                throw new ArgumentException("O nome do usuário não pode ser vazio ou nulo.", nameof(nomeUsuario));
-            }
+            if (string.IsNullOrWhiteSpace(nomeUsuario)) throw new ArgumentException("O nome do usuário não pode ser vazio.", nameof(nomeUsuario));
 
             return await Task.Run(() =>
             {
-                var listaGrupos = new List<GrupoAD>();
+                var listaGrupos = new List<Grupos>();
 
                 try
                 {
-                    using (var context = new PrincipalContext(ContextType.Domain))
+                    using var context = new PrincipalContext(ContextType.Domain);
+                    using var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, nomeUsuario) ??
+                        throw new InvalidOperationException($"Usuário '{nomeUsuario}' não foi encontrado no AD.");
+                    var grupos = user.GetGroups();
+
+                    foreach (Principal grupo in grupos)
                     {
-                        using (var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, nomeUsuario))
+                        listaGrupos.Add(new Grupos
                         {
-                            if (user == null)
-                            {
-                                throw new InvalidOperationException($"Usuário '{nomeUsuario}' não foi encontrado no AD.");
-                            }
-
-                            var grupos = user.GetGroups();
-
-                            foreach (Principal grupo in grupos)
-                            {
-                                listaGrupos.Add(new GrupoAD
-                                {
-                                    Nome = grupo.Name,
-                                    Descricao = grupo.Description ?? string.Empty
-                                });
-                            }
-                        }
+                            Nome = grupo.Name,
+                            Descricao = grupo.Description ?? string.Empty
+                        });
                     }
                 }
                 catch (Exception ex) when (ex is not InvalidOperationException && ex is not ArgumentException)

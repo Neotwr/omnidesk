@@ -7,9 +7,9 @@ namespace RemoteAccessUtil.Services.Implementations
     {
         public ComparacaoGruposResultado CompararGrupos(
             string usuarioAlvo,
-            List<GrupoAD> gruposAlvo,
+            List<Grupos> gruposAlvo,
             string usuarioReferencia,
-            List<GrupoAD> gruposReferencia)
+            List<Grupos> gruposReferencia)
         {
             var diferencaRefParaAlvo = gruposReferencia
                 .Where(grupoRef => !gruposAlvo.Any(grupoAlvo => grupoAlvo.Nome.Equals(grupoRef.Nome, StringComparison.OrdinalIgnoreCase)))
@@ -24,7 +24,7 @@ namespace RemoteAccessUtil.Services.Implementations
             };
         }
 
-        public bool FiltrarGrupo(GrupoAD grupo, string filtro)
+        public bool FiltrarGrupo(Grupos grupo, string filtro)
         {
             if (grupo == null) return false;
             if (string.IsNullOrWhiteSpace(filtro)) return true;
