@@ -1,10 +1,10 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace RemoteAccessUtil.Services.Implementations
+namespace OmniDesk.Services.Implementations
 {
     public class SapLoadContext : AssemblyLoadContext
     {
@@ -69,9 +69,9 @@ namespace RemoteAccessUtil.Services.Implementations
         {
             try
             {
-                // Define a pasta de logs em %LOCALAPPDATA%\RemoteAccessUtil\Logs
+                // Define a pasta de logs em %LOCALAPPDATA%\OmniDesk\Logs
                 string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string logsDir = Path.Combine(appData, "RemoteAccessUtil", "Logs");
+                string logsDir = Path.Combine(appData, "OmniDesk", "Logs");
                 Directory.CreateDirectory(logsDir);
 
                 var traceType = utilsAsm.GetType("SAP.Middleware.Connector.RfcTrace");

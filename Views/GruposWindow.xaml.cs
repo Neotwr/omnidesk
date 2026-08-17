@@ -1,8 +1,8 @@
-using System.Windows;
-using RemoteAccessUtil.Models;
-using RemoteAccessUtil.ViewModels;
+﻿using System.Windows;
+using OmniDesk.Models;
+using OmniDesk.ViewModels;
 
-namespace RemoteAccessUtil.Views
+namespace OmniDesk.Views
 {
     /// <summary>
     /// Lógica interna para GruposWindow.xaml

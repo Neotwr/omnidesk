@@ -1,6 +1,6 @@
-using System.Windows;
+﻿using System.Windows;
 
-namespace RemoteAccessUtil
+namespace OmniDesk
 {
     /// <summary>
     /// Interaction logic for App.xaml

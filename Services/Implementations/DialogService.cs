@@ -1,9 +1,9 @@
-using System.Windows;
-using RemoteAccessUtil.Models;
-using RemoteAccessUtil.Services.Abstractions;
-using RemoteAccessUtil.Views;
+﻿using System.Windows;
+using OmniDesk.Models;
+using OmniDesk.Services.Abstractions;
+using OmniDesk.Views;
 
-namespace RemoteAccessUtil.Services.Implementations
+namespace OmniDesk.Services.Implementations
 {
     public class DialogService : IDialogService
     {

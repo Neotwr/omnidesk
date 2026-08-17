@@ -1,7 +1,7 @@
-using RemoteAccessUtil.Models;
-using RemoteAccessUtil.Services.Abstractions;
+﻿using OmniDesk.Models;
+using OmniDesk.Services.Abstractions;
 
-namespace RemoteAccessUtil.Services.Implementations
+namespace OmniDesk.Services.Implementations
 {
     public class GrupoComparerService : IGrupoComparerService
     {

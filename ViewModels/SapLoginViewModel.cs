@@ -1,10 +1,10 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RemoteAccessUtil.Models;
-using RemoteAccessUtil.Services.Abstractions;
+using OmniDesk.Models;
+using OmniDesk.Services.Abstractions;
 
-namespace RemoteAccessUtil.ViewModels
+namespace OmniDesk.ViewModels
 {
     public partial class SapLoginViewModel : ObservableObject
     {

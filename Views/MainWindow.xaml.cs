@@ -1,7 +1,7 @@
-using System.Windows;
-using RemoteAccessUtil.ViewModels;
+﻿using System.Windows;
+using OmniDesk.ViewModels;
 
-namespace RemoteAccessUtil.Views
+namespace OmniDesk.Views
 {
     /// <summary>
     /// Lógica de interação para MainWindow.xaml

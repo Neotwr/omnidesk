@@ -1,8 +1,8 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using RemoteAccessUtil.Services.Abstractions;
-using RemoteAccessUtil.Services.Implementations;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OmniDesk.Services.Abstractions;
+using OmniDesk.Services.Implementations;
 
-namespace RemoteAccessUtil.ViewModels
+namespace OmniDesk.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {

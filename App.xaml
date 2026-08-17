@@ -1,8 +1,8 @@
-<Application
+﻿<Application
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Views="clr-namespace:RemoteAccessUtil.Views"
-    x:Class="RemoteAccessUtil.App"
+    xmlns:Views="clr-namespace:OmniDesk.Views"
+    x:Class="OmniDesk.App"
     StartupUri="./Views/MainWindow.xaml"
     ShutdownMode="OnMainWindowClose">
     <Application.Resources>

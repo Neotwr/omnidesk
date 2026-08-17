@@ -1,10 +1,10 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
-using RemoteAccessUtil.Models;
+using OmniDesk.Models;
 
-namespace RemoteAccessUtil.ViewModels
+namespace OmniDesk.ViewModels
 {
     public partial class GruposViewModel : ObservableObject
     {

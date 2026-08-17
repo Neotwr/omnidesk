@@ -1,8 +1,8 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RemoteAccessUtil.Services.Abstractions;
+using OmniDesk.Services.Abstractions;
 
-namespace RemoteAccessUtil.ViewModels
+namespace OmniDesk.ViewModels
 {
     public partial class AcessoRemotoViewModel : ObservableObject
     {

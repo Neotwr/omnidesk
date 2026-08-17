@@ -1,8 +1,8 @@
-using RemoteAccessUtil.Models;
-using RemoteAccessUtil.Services.Abstractions;
+﻿using OmniDesk.Models;
+using OmniDesk.Services.Abstractions;
 using System.DirectoryServices.AccountManagement;
 
-namespace RemoteAccessUtil.Services.Implementations
+namespace OmniDesk.Services.Implementations
 {
     public class ActiveDirectoryService : IActiveDirectoryService
     {

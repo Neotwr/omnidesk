@@ -1,11 +1,11 @@
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using RemoteAccessUtil.Models;
-using RemoteAccessUtil.Services.Abstractions;
+using OmniDesk.Models;
+using OmniDesk.Services.Abstractions;
 
-namespace RemoteAccessUtil.Services.Implementations
+namespace OmniDesk.Services.Implementations
 {
     public class SapAuthManager : ISapAuthManager
     {
@@ -22,7 +22,7 @@ namespace RemoteAccessUtil.Services.Implementations
             _sapService = sapService;
             _dialogService = dialogService ?? new DialogService();
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string appFolder = Path.Combine(appData, "RemoteAccessUtil");
+            string appFolder = Path.Combine(appData, "OmniDesk");
             Directory.CreateDirectory(appFolder);
             _storagePath = Path.Combine(appFolder, "sap_sessions.dat");
 

@@ -1,4 +1,4 @@
-# RemoteAccessUtil
+﻿# OmniDesk
 
 Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** com padrão de arquitetura **MVVM Moderno (`CommunityToolkit.Mvvm`)**, projetada para otimizar e acelerar as atividades operacionais de suporte e sustentação de TI.
 
@@ -57,14 +57,14 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
    dotnet run
    ```
 
-Alternativamente, abra `RemoteAccessUtil.slnx` no Visual Studio e execute a solução.
+Alternativamente, abra `OmniDesk.slnx` no Visual Studio e execute a solução.
 
 ### Gerar Executável Único para Distribuição:
 ```powershell
 dotnet publish -c Release
 ```
 O executável independente e autocontido será gerado na pasta:
-`bin\Release\net10.0-windows\win-x64\publish\RemoteAccessUtil.exe`
+`bin\Release\net10.0-windows\win-x64\publish\OmniDesk.exe`
 
 ---
 

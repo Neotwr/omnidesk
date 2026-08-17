@@ -1,4 +1,4 @@
-namespace RemoteAccessUtil.Models
+﻿namespace OmniDesk.Models
 {
     public class SapUserSession
     {

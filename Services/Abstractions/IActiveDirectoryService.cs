@@ -1,6 +1,6 @@
-using RemoteAccessUtil.Models;
+﻿using OmniDesk.Models;
 
-namespace RemoteAccessUtil.Services.Abstractions
+namespace OmniDesk.Services.Abstractions
 {
     public interface IActiveDirectoryService
     {

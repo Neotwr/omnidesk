@@ -1,8 +1,8 @@
-using RemoteAccessUtil.Services.Abstractions;
+﻿using OmniDesk.Services.Abstractions;
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace RemoteAccessUtil.Services.Implementations
+namespace OmniDesk.Services.Implementations
 {
     public class RemoteAccessService : IRemoteAccessService
     {
