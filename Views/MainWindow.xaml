@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OmniDesk"
         mc:Ignorable="d"
         Title="OmniDesk"
-        Height="185"
+        Height="180"
         Width="290"
         ResizeMode="NoResize">
 
@@ -227,7 +227,7 @@
                         Command="{Binding CompararCommand}"
                         Content="Comparar"
                         Grid.Row="2"
-                        Height="27"
+                        Height="26"
                         Width="65"
                         Margin="0,5,0,0"/>
                 </Grid>
