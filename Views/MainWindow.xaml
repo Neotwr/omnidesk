@@ -17,19 +17,19 @@
     <Grid>
         <TabControl>
             <!-- guia 1 -->
-            <TabItem Header="Acesso remoto"
-                    DataContext="{Binding AcessoRemoto}">
+            <TabItem
+                Header="Acesso remoto"
+                DataContext="{Binding AcessoRemoto}">
                 <Grid
                     RowDefinitions="26, 26, 26"
-                    VerticalAlignment="Top"
-                    Margin="0 8 0 0"
+                    VerticalAlignment="Center" 
                     HorizontalAlignment="Center">
 
                     <StackPanel
                         Orientation="Horizontal"
                         HorizontalAlignment="Left">
                         <Label
-                            Content="Insira o patrimônio ou IP"/>
+                            Content="Insira o patrimônio ou IP" />
                     </StackPanel>
 
                     <StackPanel
@@ -42,7 +42,7 @@
                             Margin="0 0 10 0">
                             <TextBox.InputBindings>
                                 <KeyBinding Key="Enter"
-                                        Command="{Binding ConectarCommand}"/>
+                                    Command="{Binding ConectarCommand}"/>
                             </TextBox.InputBindings>
                         </TextBox>
                         <Button
@@ -53,8 +53,10 @@
                             Grid.Column="2"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2"
-                            Orientation="Horizontal">
+                    <StackPanel
+                        Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left">
                         <RadioButton
                             x:Name="rbMsra"
                             Content="MSRA"
@@ -71,12 +73,12 @@
             </TabItem>
 
             <!-- guia 2 -->
-            <TabItem Header="Acessos"
-                    DataContext="{Binding ConsultaAcessos}">
+            <TabItem
+                Header="Acessos"
+                DataContext="{Binding ConsultaAcessos}">
                 <Grid
                     RowDefinitions="26, 26, 26, Auto"
-                    VerticalAlignment="Top"
-                    Margin="0 6 0 0"
+                    VerticalAlignment="Center"
                     HorizontalAlignment="Center">
 
                     <StackPanel
@@ -103,13 +105,13 @@
                             x:Name="btnConsultarAcesso"
                             Content="Consultar"
                             Command="{Binding ConsultarCommand}"
-                            Width="62"
-                            Grid.Column="2"/>
+                            Width="62"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Center">
+                    <StackPanel
+                        Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
                         <RadioButton
                             x:Name="rbAcessoAD"
                             Content="Grupos do AD"
@@ -123,10 +125,11 @@
                             GroupName="TipoAcesso"/>
                     </StackPanel>
 
-                    <Grid x:Name="pnlAmbienteSap"
-                          Grid.Row="3"
-                          Margin="0 4 0 0"
-                          Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
+                    <Grid
+                        x:Name="pnlAmbienteSap"
+                        Grid.Row="3"
+                        Margin="0 4 0 0"
+                        Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="188"/>
                             <ColumnDefinition Width="Auto"/>
@@ -154,8 +157,9 @@
             </TabItem>
 
             <!-- guia 3 -->
-            <TabItem Header="Comparar"
-                    DataContext="{Binding ComparadorGrupos}">
+            <TabItem
+                Header="Comparar"
+                DataContext="{Binding ComparadorGrupos}">
                 <Grid
                     RowDefinitions="*, *, *"
                     VerticalAlignment="Center"
@@ -165,7 +169,9 @@
                         Orientation="Horizontal">
                         <Label
                             Content="Usuário"
-                            Width="50"/>
+                            Width="50"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"/>
                         <TextBox
                             x:Name="txtUserA"
                             Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}"
@@ -192,16 +198,19 @@
 
                         <Label
                             Content="Ref."
-                                Width="50"/>
+                            Width="50"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
                         <TextBox
                             x:Name="txtUserB"
                             Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}"
                             Margin="1,2,2,1"
                             Width="135"
-                                Height="26">
+                            Height="26">
                             <TextBox.InputBindings>
-                                <KeyBinding Key="Enter"
-                                        Command="{Binding BuscarUsuarioReferenciaCommand}"/>
+                                <KeyBinding
+                                    Key="Enter"
+                                    Command="{Binding BuscarUsuarioReferenciaCommand}"/>
                             </TextBox.InputBindings>
                         </TextBox>
                         <Button
@@ -218,7 +227,6 @@
                         Command="{Binding CompararCommand}"
                         Content="Comparar"
                         Grid.Row="2"
-                        Grid.Column="1"
                         Height="27"
                         Width="65"
                         Margin="0,5,0,0"/>
