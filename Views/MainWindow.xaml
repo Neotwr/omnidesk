@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OmniDesk"
         mc:Ignorable="d"
-        Title="OmniDesk" Height="185" Width="290" ResizeMode="NoResize">
-    
+        Title="OmniDesk"
+        Height="185"
+        Width="290"
+        ResizeMode="NoResize">
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
     </Window.Resources>
 
     <Grid>
         <TabControl>
-            <!-- ABA 1: ACESSO REMOTO -->
-            <TabItem Header="Acesso remoto" DataContext="{Binding AcessoRemoto}">
+            <!-- guia 1 -->
+            <TabItem Header="Acesso remoto"
+                    DataContext="{Binding AcessoRemoto}">
                 <Grid
                     RowDefinitions="26, 26, 26"
                     VerticalAlignment="Top"
@@ -27,7 +31,7 @@
                         <Label
                             Content="Insira o patrimônio ou IP"/>
                     </StackPanel>
-                    
+
                     <StackPanel
                         Orientation="Horizontal"
                         Grid.Row="1">
@@ -37,7 +41,8 @@
                             Width="150"
                             Margin="0 0 10 0">
                             <TextBox.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding ConectarCommand}"/>
+                                <KeyBinding Key="Enter"
+                                        Command="{Binding ConectarCommand}"/>
                             </TextBox.InputBindings>
                         </TextBox>
                         <Button
@@ -48,7 +53,8 @@
                             Grid.Column="2"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <StackPanel Grid.Row="2"
+                            Orientation="Horizontal">
                         <RadioButton
                             x:Name="rbMsra"
                             Content="MSRA"
@@ -64,72 +70,9 @@
                 </Grid>
             </TabItem>
 
-            <!-- ABA 2: GRUPOS / COMPARADOR -->
-            <TabItem Header="Grupos" DataContext="{Binding ComparadorGrupos}">
-                <Grid
-                    RowDefinitions="Auto, Auto, *"
-                    ColumnDefinitions="Auto, *, Auto"
-                    VerticalAlignment="Center" >
-                 
-                    <Label
-                        Content="Usuário"
-                        Grid.Column="0"/>
-                    <TextBox
-                        x:Name="txtUserA"
-                        Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}"
-                        Grid.Column="1" 
-                        Margin="1 2 2 1">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding BuscarUsuarioAlvoCommand}"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
-                    <Button 
-                        x:Name="btnSearchA"
-                        Command="{Binding BuscarUsuarioAlvoCommand}"
-                        Content="🔍"
-                        ToolTip="Procurar"
-                        FontSize="16"
-                        Grid.Column="2" 
-                        Margin="1 2 2 1"/>
-
-                    <Label 
-                        Content="Ref." 
-                        Grid.Row="1" 
-                        Grid.Column="0"/>
-                    <TextBox 
-                        x:Name="txtUserB"
-                        Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}"
-                        Grid.Row="1" 
-                        Grid.Column="1" 
-                        Margin="1 2 2 1">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding BuscarUsuarioReferenciaCommand}"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
-                    <Button 
-                        x:Name="btnSearchB"
-                        Command="{Binding BuscarUsuarioReferenciaCommand}"
-                        Content="🔍"
-                        ToolTip="Procurar"
-                        FontSize="16"
-                        Grid.Row="1" 
-                        Grid.Column="2" 
-                        Margin="1 2 2 1"/>
-
-                    <Button 
-                        x:Name="btnComparar"
-                        Command="{Binding CompararCommand}"
-                        Content="Comparar" 
-                        Grid.Row="2" 
-                        Grid.Column="1" 
-                        Height="27"
-                        Width="114" 
-                        Margin="0 3 0 0"/>
-                </Grid>
-            </TabItem>
-
-            <!-- ABA 3: ACESSOS (AD & SAP) -->
-            <TabItem Header="Acessos" DataContext="{Binding ConsultaAcessos}">
+            <!-- guia 2 -->
+            <TabItem Header="Acessos"
+                    DataContext="{Binding ConsultaAcessos}">
                 <Grid
                     RowDefinitions="26, 26, 26, Auto"
                     VerticalAlignment="Top"
@@ -152,7 +95,8 @@
                             Width="150"
                             Margin="0 0 10 0">
                             <TextBox.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding ConsultarCommand}"/>
+                                <KeyBinding Key="Enter"
+                                        Command="{Binding ConsultarCommand}"/>
                             </TextBox.InputBindings>
                         </TextBox>
                         <Button
@@ -163,7 +107,9 @@
                             Grid.Column="2"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
                         <RadioButton
                             x:Name="rbAcessoAD"
                             Content="Grupos do AD"
@@ -177,16 +123,16 @@
                             GroupName="TipoAcesso"/>
                     </StackPanel>
 
-                    <Grid x:Name="pnlAmbienteSap" 
-                          Grid.Row="3" 
-                          Margin="0 4 0 0" 
+                    <Grid x:Name="pnlAmbienteSap"
+                          Grid.Row="3"
+                          Margin="0 4 0 0"
                           Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="188"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox 
-                            x:Name="cboSapAmbienteAcesso" 
+                        <ComboBox
+                            x:Name="cboSapAmbienteAcesso"
                             ItemsSource="{Binding Ambientes}"
                             SelectedItem="{Binding AmbienteSelecionado}"
                             Text="{Binding AmbienteSelecionado}"
@@ -194,7 +140,7 @@
                             Height="24"
                             VerticalContentAlignment="Center"
                             ToolTip="Selecione ou digite o ambiente SAP"/>
-                        <Button 
+                        <Button
                             x:Name="btnTrocarLoginSap"
                             Command="{Binding TrocarLoginSapCommand}"
                             Grid.Column="1"
@@ -206,6 +152,79 @@
                     </Grid>
                 </Grid>
             </TabItem>
+
+            <!-- guia 3 -->
+            <TabItem Header="Comparar"
+                    DataContext="{Binding ComparadorGrupos}">
+                <Grid
+                    RowDefinitions="*, *, *"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <Label
+                            Content="Usuário"
+                            Width="50"/>
+                        <TextBox
+                            x:Name="txtUserA"
+                            Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="1 2 2 1"
+                            Width="135"
+                            Height="26">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter"
+                                        Command="{Binding BuscarUsuarioAlvoCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button
+                            x:Name="btnSearchA"
+                            Command="{Binding BuscarUsuarioAlvoCommand}"
+                            Content="🔍"
+                            ToolTip="Procurar"
+                            FontSize="16"
+                            Margin="1 2 2 1"/>
+                    </StackPanel>
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Grid.Row="1">
+
+                        <Label
+                            Content="Ref."
+                                Width="50"/>
+                        <TextBox
+                            x:Name="txtUserB"
+                            Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="1,2,2,1"
+                            Width="135"
+                                Height="26">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter"
+                                        Command="{Binding BuscarUsuarioReferenciaCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button
+                            x:Name="btnSearchB"
+                            Command="{Binding BuscarUsuarioReferenciaCommand}"
+                            Content="🔍"
+                            ToolTip="Procurar"
+                            FontSize="16"
+                            Margin="1 2 2 1"/>
+                    </StackPanel>
+
+                    <Button
+                        x:Name="btnComparar"
+                        Command="{Binding CompararCommand}"
+                        Content="Comparar"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Height="27"
+                        Width="65"
+                        Margin="0,5,0,0"/>
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>
