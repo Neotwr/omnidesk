@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OmniDesk.Models;
@@ -11,6 +11,7 @@ namespace OmniDesk.ViewModels
         private readonly IActiveDirectoryService _adService;
         private readonly ISapService _sapService;
         private readonly ISapAuthManager _sapAuthManager;
+        private readonly ISeniorService _seniorService;
         private readonly IDialogService _dialogService;
 
         [ObservableProperty]
@@ -21,6 +22,9 @@ namespace OmniDesk.ViewModels
 
         [ObservableProperty]
         private bool _isSapChecked;
+
+        [ObservableProperty]
+        private bool _isSeniorChecked;
 
         [ObservableProperty]
         private ObservableCollection<string> _ambientes = new();
@@ -35,11 +39,13 @@ namespace OmniDesk.ViewModels
             IActiveDirectoryService adService,
             ISapService sapService,
             ISapAuthManager sapAuthManager,
+            ISeniorService seniorService,
             IDialogService dialogService)
         {
             _adService = adService;
             _sapService = sapService;
             _sapAuthManager = sapAuthManager;
+            _seniorService = seniorService;
             _dialogService = dialogService;
         }
 
@@ -141,6 +147,11 @@ namespace OmniDesk.ViewModels
 
                     List<Grupos> perfis = await _sapService.ObterPerfisDoUsuarioAsync(usuarioAlvo, sessao);
                     _dialogService.ShowGruposWindow(perfis, $"Perfis SAP de: {usuarioAlvo}", $"Ambiente: {sessao.DestinationName} (Mandante: {sessao.Client})");
+                }
+                else if (IsSeniorChecked)
+                {
+                    List<Grupos> gruposSenior = await _seniorService.ObterGruposDoUsuarioAsync(usuarioAlvo);
+                    _dialogService.ShowGruposWindow(gruposSenior, $"Grupos Senior de: {usuarioAlvo}", "Origem: Senior (Vetorh / SGU)");
                 }
             }
             catch (UnauthorizedAccessException ex)

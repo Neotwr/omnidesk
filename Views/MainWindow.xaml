@@ -111,16 +111,22 @@
                     <StackPanel
                         Grid.Row="2"
                         Orientation="Horizontal"
-                        HorizontalAlignment="Center">
+						HorizontalAlignment="Left">
                         <RadioButton
                             x:Name="rbAcessoAD"
-                            Content="Grupos do AD"
+                            Content="Grupos AD"
                             IsChecked="{Binding IsAdChecked}"
                             GroupName="TipoAcesso"/>
                         <RadioButton
+                            x:Name="rbAcessoSenior"
+                            Margin="10 0 0 0"
+                            Content="Senior"
+                            IsChecked="{Binding IsSeniorChecked}"
+                            GroupName="TipoAcesso"/>
+                        <RadioButton
                             x:Name="rbAcessoSAP"
-                            Margin="15 0 0 0"
-                            Content="Grupos do SAP"
+                            Margin="10 0 0 0"
+                            Content="SAP"
                             IsChecked="{Binding IsSapChecked}"
                             GroupName="TipoAcesso"/>
                     </StackPanel>
@@ -128,7 +134,6 @@
                     <Grid
                         x:Name="pnlAmbienteSap"
                         Grid.Row="3"
-                        Margin="0 4 0 0"
                         Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="188"/>

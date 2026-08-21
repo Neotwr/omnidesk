@@ -1,4 +1,4 @@
-﻿# OmniDesk
+# OmniDesk
 
 Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** com padrão de arquitetura **MVVM Moderno (`CommunityToolkit.Mvvm`)**, projetada para otimizar e acelerar as atividades operacionais de suporte e sustentação de TI.
 
@@ -15,8 +15,12 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 - **Comparação Inteligente**: Compara dois usuários (Alvo vs Referência) e exibe com precisão **apenas os grupos que o usuário de referência possui e que faltam no usuário alvo**.
 - **Filtro Instantâneo**: Janela de resultados com busca textual em tempo real sobre nome e descrição dos grupos.
 
-### 3. 🔑 Consulta de Acessos Multi-Ambiente (AD & SAP)
+### 3. 🔑 Consulta de Acessos Multi-Ambiente (AD, Senior e SAP)
 - **Active Directory**: Consulta todos os grupos de segurança e distribuição do usuário no domínio.
+- **Senior (Vetorh / SGU)**:
+  - Integração nativa em segundo plano com o portal de atendimento corporativo (ServiceNow / WBS).
+  - Autenticação silenciosa via **Single Sign-On (SSO)** com Microsoft Entra ID usando **WebView2** invisível.
+  - Consulta instantânea de perfis e telas de RH/SGU atribuídos ao colaborador.
 - **SAP ERP / NetWeaver**:
   - Integração via **SAP .NET Connector 3.0 (NCo)** executando a BAPI `BAPI_USER_GET_DETAIL`.
   - **Descoberta Automática de Ambientes**: Carrega todas as conexões cadastradas no `SAPUILandscape.xml` / `saplogon.ini` da máquina do operador.
@@ -31,8 +35,11 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 - **Interface**: WPF (Windows Presentation Foundation)
 - **Padrão de Projeto**: MVVM Moderno com `CommunityToolkit.Mvvm` (Source Generators, `ObservableProperty`, `RelayCommand`)
 - **Integração Active Directory**: `System.DirectoryServices.AccountManagement`
+- **Integração Senior / WBS**: `Microsoft.Web.WebView2` com SSO transparente e execução de requisições assíncronas isoladas
 - **Integração SAP**: SAP .NET Connector 3.0 x64 via `SapLoadContext` compatível com CoreCLR .NET 10
-- **Segurança**: Criptografia de credenciais via Windows DPAPI (`System.Security.Cryptography.ProtectedData`)
+- **Segurança e Configuração**:
+  - Criptografia de credenciais via Windows DPAPI (`System.Security.Cryptography.ProtectedData`).
+  - Configurações corporativas embutidas em memória (`EmbeddedResource`) via `appsettings.json`, sem gerar arquivos extras na pasta do executável e com isolamento total no Git para evitar exposição de URLs internas.
 
 ---
 
@@ -40,15 +47,39 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 
 1. **Sistema Operacional**: Windows 10/11 (64-bit).
 2. **SDK**: [.NET 10.0 SDK](https://dotnet.microsoft.com/download) instalado.
-3. **Ambiente de Rede**: Acesso ao domínio do Active Directory da sua rede corporativa.
-4. **Dependências SAP**: Para executar a consulta SAP, os binários do SAP NCo 3.0 64-bit devem estar presentes na raiz do projeto.
+3. **Ambiente de Rede**: Acesso ao domínio corporativo do Active Directory.
+4. **WebView2 Runtime**: Geralmente pré-instalado nativamente no Windows 10/11 (Microsoft Edge WebView2 Runtime).
+5. **Dependências SAP**: Para executar a consulta SAP, os binários do SAP NCo 3.0 64-bit devem estar presentes na raiz do projeto.
+
+---
+
+## ⚙️ Configuração Local
+
+Ao clonar o repositório, copie o arquivo de exemplo de configurações e preencha com os endpoints do seu ambiente:
+
+```powershell
+Copy-Item appsettings.example.json appsettings.json
+```
+
+Estrutura do `appsettings.json`:
+```json
+{
+  "WbsSettings": {
+    "BaseUrl": "https://seu-portal.empresa.com",
+    "SsoId": "SEU_GLIDE_SSO_ID_AQUI",
+    "CatalogSysId": "SYS_ID_DO_CATALOGO_AQUI",
+    "WidgetSysId": "SYS_ID_DO_WIDGET_AQUI"
+  }
+}
+```
+> *Nota: O arquivo `appsettings.json` está incluído no `.gitignore` e nunca será comitado para o repositório remoto.*
 
 ---
 
 ## 🚀 Compilar e Executar
 
 1. Abra um terminal no diretório do projeto.
-2. Para compilar:
+2. Para compilar em modo Release:
    ```powershell
    dotnet build -c Release
    ```
@@ -59,11 +90,11 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 
 Alternativamente, abra `OmniDesk.slnx` no Visual Studio e execute a solução.
 
-### Gerar Executável Único para Distribuição:
+### Gerar Executável Único para Distribuição (Single-File):
 ```powershell
 dotnet publish -c Release
 ```
-O executável independente e autocontido será gerado na pasta:
+O executável independente, autocontido e sem dependências externas será gerado na pasta:
 `bin\Release\net10.0-windows\win-x64\publish\OmniDesk.exe`
 
 ---
@@ -71,6 +102,7 @@ O executável independente e autocontido será gerado na pasta:
 ## 📦 Dependências
 
 - **`System.DirectoryServices.AccountManagement`**: Usado para autenticar e consultar grupos de usuários no Active Directory.
+- **`Microsoft.Web.WebView2`**: Motor do Microsoft Edge integrado para execução de requisições autenticadas e SSO corporativo.
 - **`CommunityToolkit.Mvvm`**: Framework oficial da Microsoft para implementação do padrão MVVM com alta performance e Source Generators.
 - **`Microsoft.CodeAnalysis.CSharp` (Roslyn)**: Compilação dinâmica de stubs de compatibilidade para suporte a bibliotecas legadas no runtime do .NET 10.
 - **`SAP .NET Connector 3.0 (NCo)`**: SDK oficial da SAP para comunicação RFC de alta performance e execução da BAPI `BAPI_USER_GET_DETAIL`.
