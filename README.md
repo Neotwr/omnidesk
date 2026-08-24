@@ -6,20 +6,23 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 
 ## ✨ Principais Recursos
 
-### 1. 🖥️ Acesso Remoto
+### 1. 🖥️ Acesso Remoto Inteligente
 - Inicie sessões de **Assistência Remota do Windows** (`msra.exe /offerra`) ou **Área de Trabalho Remota** (`mstsc.exe`) informando apenas o **patrimônio** ou **endereço IP**.
+- **Autenticação Automática de Serviço**: Integração sob demanda com conta de serviço/admin (DCOM nativo para MSRA e NLA para RDP com limpeza automática de credenciais temporárias do Windows).
+- **Gerenciamento Rápido**: Botão de chave (**🔑**) no canto inferior direito para troca e atualização de credenciais a qualquer momento.
 - Suporte a disparo instantâneo via tecla **Enter**.
 
 ### 2. 👥 Comparador de Grupos do Active Directory
 - **Busca Rápida**: Consulte os grupos de qualquer usuário do domínio individualmente através do botão de lupa 🔍.
 - **Comparação Inteligente**: Compara dois usuários (Alvo vs Referência) e exibe com precisão **apenas os grupos que o usuário de referência possui e que faltam no usuário alvo**.
 - **Filtro Instantâneo**: Janela de resultados com busca textual em tempo real sobre nome e descrição dos grupos.
+- **Execução com Conta de Serviço**: Realiza consultas seguras no AD utilizando a conta administrativa configurada com resolução dinâmica de domínio.
 
 ### 3. 🔑 Consulta de Acessos Multi-Ambiente (AD, Senior e SAP)
-- **Active Directory**: Consulta todos os grupos de segurança e distribuição do usuário no domínio.
+- **Active Directory**: Consulta todos os grupos de segurança e distribuição do usuário no domínio via conta de serviço.
 - **Senior (Vetorh / SGU)**:
   - Integração nativa em segundo plano com o portal de atendimento corporativo (ServiceNow / WBS).
-  - Autenticação silenciosa via **Single Sign-On (SSO)** com Microsoft Entra ID usando **WebView2** invisível.
+  - Autenticação silenciosa via **Single Sign-On (SSO)** com Microsoft Entra ID usando **WebView2** invisível rodando sob o usuário logado do Windows.
   - Consulta instantânea de perfis e telas de RH/SGU atribuídos ao colaborador.
 - **SAP ERP / NetWeaver**:
   - Integração via **SAP .NET Connector 3.0 (NCo)** executando a BAPI `BAPI_USER_GET_DETAIL`.
@@ -34,10 +37,11 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 - **Framework**: [.NET 10.0 (Windows)](https://dotnet.microsoft.com/download)
 - **Interface**: WPF (Windows Presentation Foundation)
 - **Padrão de Projeto**: MVVM Moderno com `CommunityToolkit.Mvvm` (Source Generators, `ObservableProperty`, `RelayCommand`)
-- **Integração Active Directory**: `System.DirectoryServices.AccountManagement`
+- **Integração Active Directory**: `System.DirectoryServices.AccountManagement` com credenciais dinâmicas
 - **Integração Senior / WBS**: `Microsoft.Web.WebView2` com SSO transparente e execução de requisições assíncronas isoladas
 - **Integração SAP**: SAP .NET Connector 3.0 x64 via `SapLoadContext` compatível com CoreCLR .NET 10
-- **Segurança e Configuração**:
+- **Segurança e Cofre de Credenciais**:
+  - `ServiceAuthManager`: Gerenciamento centralizado de conta de serviço para AD, Comparador e Acesso Remoto.
   - Criptografia de credenciais via Windows DPAPI (`System.Security.Cryptography.ProtectedData`).
   - Configurações corporativas embutidas em memória (`EmbeddedResource`) via `appsettings.json`, sem gerar arquivos extras na pasta do executável e com isolamento total no Git para evitar exposição de URLs internas.
 

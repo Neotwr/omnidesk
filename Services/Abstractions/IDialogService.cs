@@ -1,4 +1,4 @@
-﻿using OmniDesk.Models;
+using OmniDesk.Models;
 
 namespace OmniDesk.Services.Abstractions
 {
@@ -9,5 +9,6 @@ namespace OmniDesk.Services.Abstractions
         void ShowInfo(string message, string title = "Informação");
         void ShowGruposWindow(IEnumerable<Grupos> grupos, string titulo, string? descricao = null);
         SapUserSession? ShowSapLoginDialog(IEnumerable<string> ambientes, SapUserSession? sessaoSugerida = null, string? ambienteInicial = null);
+        ServiceAccountCredentials? ShowServiceLoginDialog(ServiceAccountCredentials? credenciaisSugeridas = null);
     }
 }

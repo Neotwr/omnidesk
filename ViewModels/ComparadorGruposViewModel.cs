@@ -1,4 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OmniDesk.Models;
 using OmniDesk.Services.Abstractions;
@@ -9,6 +12,7 @@ namespace OmniDesk.ViewModels
     {
         private readonly IActiveDirectoryService _adService;
         private readonly IGrupoComparerService _grupoComparerService;
+        private readonly IServiceAuthManager _serviceAuthManager;
         private readonly IDialogService _dialogService;
 
         [ObservableProperty]
@@ -23,10 +27,12 @@ namespace OmniDesk.ViewModels
         public ComparadorGruposViewModel(
             IActiveDirectoryService adService,
             IGrupoComparerService grupoComparerService,
+            IServiceAuthManager serviceAuthManager,
             IDialogService dialogService)
         {
             _adService = adService;
             _grupoComparerService = grupoComparerService;
+            _serviceAuthManager = serviceAuthManager;
             _dialogService = dialogService;
         }
 
@@ -53,8 +59,16 @@ namespace OmniDesk.ViewModels
             IsBusy = true;
             try
             {
-                List<Grupos> grupos = await _adService.ObterGruposDoUsuarioAsync(nomeUsuario.Trim());
+                var creds = await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync();
+                if (creds == null) return;
+
+                List<Grupos> grupos = await _adService.ObterGruposDoUsuarioAsync(nomeUsuario.Trim(), creds);
                 _dialogService.ShowGruposWindow(grupos, $"Grupos de: {nomeUsuario.Trim()}", $"Origem: Active Directory");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _serviceAuthManager.InvalidarCredenciais();
+                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação AD");
             }
             catch (Exception ex)
             {
@@ -81,8 +95,11 @@ namespace OmniDesk.ViewModels
             IsBusy = true;
             try
             {
-                Task<List<Grupos>> tarefaBuscaA = _adService.ObterGruposDoUsuarioAsync(userA);
-                Task<List<Grupos>> tarefaBuscaRef = _adService.ObterGruposDoUsuarioAsync(userRef);
+                var creds = await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync();
+                if (creds == null) return;
+
+                Task<List<Grupos>> tarefaBuscaA = _adService.ObterGruposDoUsuarioAsync(userA, creds);
+                Task<List<Grupos>> tarefaBuscaRef = _adService.ObterGruposDoUsuarioAsync(userRef, creds);
 
                 await Task.WhenAll(tarefaBuscaA, tarefaBuscaRef);
 
@@ -92,6 +109,11 @@ namespace OmniDesk.ViewModels
                 ComparacaoGruposResultado resultado = _grupoComparerService.CompararGrupos(userA, gruposUser, userRef, gruposRef);
 
                 _dialogService.ShowGruposWindow(resultado.GruposFaltantes, resultado.TituloJanela, resultado.TextoExplicativo);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _serviceAuthManager.InvalidarCredenciais();
+                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação AD");
             }
             catch (Exception ex)
             {

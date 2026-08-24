@@ -1,4 +1,7 @@
+using System;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using OmniDesk.Services.Abstractions;
 using OmniDesk.Services.Implementations;
 
@@ -11,6 +14,7 @@ namespace OmniDesk.ViewModels
         public ConsultaAcessosViewModel ConsultaAcessos { get; }
 
         private readonly ISeniorService _seniorService;
+        private readonly IServiceAuthManager _serviceAuthManager;
 
         public MainViewModel()
             : this(
@@ -19,6 +23,7 @@ namespace OmniDesk.ViewModels
                   new GrupoComparerService(),
                   new SapService(),
                   new SeniorService(),
+                  null,
                   null,
                   new DialogService())
         {
@@ -31,14 +36,24 @@ namespace OmniDesk.ViewModels
             ISapService sapService,
             ISeniorService seniorService,
             ISapAuthManager? sapAuthManager,
+            IServiceAuthManager? serviceAuthManager,
             IDialogService dialogService)
         {
             var authManager = sapAuthManager ?? new SapAuthManager(sapService, dialogService);
-            _seniorService = seniorService;
+            var svcAuthManager = serviceAuthManager ?? new ServiceAuthManager(dialogService);
 
-            AcessoRemoto = new AcessoRemotoViewModel(remoteAccessService, dialogService);
-            ComparadorGrupos = new ComparadorGruposViewModel(adService, grupoComparerService, dialogService);
-            ConsultaAcessos = new ConsultaAcessosViewModel(adService, sapService, authManager, seniorService, dialogService);
+            _seniorService = seniorService;
+            _serviceAuthManager = svcAuthManager;
+
+            AcessoRemoto = new AcessoRemotoViewModel(remoteAccessService, svcAuthManager, dialogService);
+            ComparadorGrupos = new ComparadorGruposViewModel(adService, grupoComparerService, svcAuthManager, dialogService);
+            ConsultaAcessos = new ConsultaAcessosViewModel(adService, sapService, authManager, seniorService, svcAuthManager, dialogService);
+        }
+
+        [RelayCommand]
+        public async Task TrocarLoginServicoAsync()
+        {
+            await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync(forcarDialogo: true);
         }
 
         public async Task InicializarAsync()

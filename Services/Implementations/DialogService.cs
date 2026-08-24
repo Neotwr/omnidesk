@@ -1,4 +1,5 @@
-﻿using System.Windows;
+using System.Linq;
+using System.Windows;
 using OmniDesk.Models;
 using OmniDesk.Services.Abstractions;
 using OmniDesk.Views;
@@ -51,6 +52,20 @@ namespace OmniDesk.Services.Implementations
                 bool? resultado = dialog.ShowDialog();
 
                 return resultado == true ? dialog.SessaoCriada : null;
+            });
+        }
+
+        public ServiceAccountCredentials? ShowServiceLoginDialog(ServiceAccountCredentials? credenciaisSugeridas = null)
+        {
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                Window? activeWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                    ?? Application.Current.MainWindow;
+
+                var dialog = new ServiceLoginDialog(activeWindow, credenciaisSugeridas);
+                bool? resultado = dialog.ShowDialog();
+
+                return resultado == true ? dialog.CredenciaisCriadas : null;
             });
         }
     }

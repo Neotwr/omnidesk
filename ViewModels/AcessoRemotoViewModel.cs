@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OmniDesk.Services.Abstractions;
 
@@ -7,6 +8,7 @@ namespace OmniDesk.ViewModels
     public partial class AcessoRemotoViewModel : ObservableObject
     {
         private readonly IRemoteAccessService _remoteAccessService;
+        private readonly IServiceAuthManager _serviceAuthManager;
         private readonly IDialogService _dialogService;
 
         [ObservableProperty]
@@ -20,10 +22,18 @@ namespace OmniDesk.ViewModels
 
         public AcessoRemotoViewModel(
             IRemoteAccessService remoteAccessService,
+            IServiceAuthManager serviceAuthManager,
             IDialogService dialogService)
         {
             _remoteAccessService = remoteAccessService;
+            _serviceAuthManager = serviceAuthManager;
             _dialogService = dialogService;
+        }
+
+        [RelayCommand]
+        public void TrocarLoginServico()
+        {
+            _serviceAuthManager.ObterOuSolicitarCredenciais(forcarDialogo: true);
         }
 
         [RelayCommand]
@@ -37,7 +47,10 @@ namespace OmniDesk.ViewModels
 
             try
             {
-                _remoteAccessService.IniciarAssistencialRemota(Destino.Trim(), IsMsra);
+                var creds = _serviceAuthManager.ObterOuSolicitarCredenciais();
+                if (creds == null) return;
+
+                _remoteAccessService.IniciarAssistencialRemota(Destino.Trim(), IsMsra, creds);
             }
             catch (Exception ex)
             {

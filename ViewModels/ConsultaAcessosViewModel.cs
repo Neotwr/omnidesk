@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OmniDesk.Models;
@@ -12,6 +15,7 @@ namespace OmniDesk.ViewModels
         private readonly ISapService _sapService;
         private readonly ISapAuthManager _sapAuthManager;
         private readonly ISeniorService _seniorService;
+        private readonly IServiceAuthManager _serviceAuthManager;
         private readonly IDialogService _dialogService;
 
         [ObservableProperty]
@@ -40,12 +44,14 @@ namespace OmniDesk.ViewModels
             ISapService sapService,
             ISapAuthManager sapAuthManager,
             ISeniorService seniorService,
+            IServiceAuthManager serviceAuthManager,
             IDialogService dialogService)
         {
             _adService = adService;
             _sapService = sapService;
             _sapAuthManager = sapAuthManager;
             _seniorService = seniorService;
+            _serviceAuthManager = serviceAuthManager;
             _dialogService = dialogService;
         }
 
@@ -126,7 +132,14 @@ namespace OmniDesk.ViewModels
             {
                 if (IsAdChecked)
                 {
-                    List<Grupos> grupos = await _adService.ObterGruposDoUsuarioAsync(usuarioAlvo);
+                    var creds = await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync();
+                    if (creds == null)
+                    {
+                        // Cancelado pelo usuário
+                        return;
+                    }
+
+                    List<Grupos> grupos = await _adService.ObterGruposDoUsuarioAsync(usuarioAlvo, creds);
                     _dialogService.ShowGruposWindow(grupos, $"Grupos AD de: {usuarioAlvo}", "Origem: Active Directory");
                 }
                 else if (IsSapChecked)
@@ -156,11 +169,16 @@ namespace OmniDesk.ViewModels
             }
             catch (UnauthorizedAccessException ex)
             {
-                if (!string.IsNullOrWhiteSpace(ambienteAtual))
+                if (IsSapChecked && !string.IsNullOrWhiteSpace(ambienteAtual))
                 {
                     _sapAuthManager.InvalidarSessao(ambienteAtual);
                 }
-                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação SAP");
+                else if (IsAdChecked)
+                {
+                    _serviceAuthManager.InvalidarCredenciais();
+                }
+
+                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação");
             }
             catch (KeyNotFoundException ex)
             {

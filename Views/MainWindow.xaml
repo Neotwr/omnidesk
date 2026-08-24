@@ -15,60 +15,74 @@
     </Window.Resources>
 
     <Grid>
-        <TabControl>
+		<TabControl>
             <!-- guia 1 -->
             <TabItem
                 Header="Acesso remoto"
                 DataContext="{Binding AcessoRemoto}">
-                <Grid
-                    RowDefinitions="26, 26, 26"
-                    VerticalAlignment="Center" 
-                    HorizontalAlignment="Center">
+                <Grid>
+                    <Grid
+                        RowDefinitions="26, 26, 26"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
 
-                    <StackPanel
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left">
-                        <Label
-                            Content="Insira o patrimônio ou IP" />
-                    </StackPanel>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                            <Label
+                                Content="Insira o patrimônio ou IP" />
+                        </StackPanel>
 
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Grid.Row="1">
-                        <TextBox
-                            x:Name="txtConnect"
-                            Text="{Binding Destino, UpdateSourceTrigger=PropertyChanged}"
-                            Width="150"
-                            Margin="0 0 10 0">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Enter"
-                                    Command="{Binding ConectarCommand}"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button
-                            x:Name="btnConnect"
-                            Content="Conectar"
-                            Command="{Binding ConectarCommand}"
-                            Width="62"
-                            Grid.Column="2"/>
-                    </StackPanel>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Grid.Row="1">
+                            <TextBox
+                                x:Name="txtConnect"
+                                Text="{Binding Destino, UpdateSourceTrigger=PropertyChanged}"
+                                Width="150"
+                                Margin="0 0 10 0">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter"
+                                        Command="{Binding ConectarCommand}"/>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button
+                                x:Name="btnConnect"
+                                Content="Conectar"
+                                Command="{Binding ConectarCommand}"
+                                Width="62"
+                                Grid.Column="2"/>
+                        </StackPanel>
 
-                    <StackPanel
-                        Grid.Row="2"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left">
-                        <RadioButton
-                            x:Name="rbMsra"
-                            Content="MSRA"
-                            IsChecked="{Binding IsMsra}"
-                            GroupName="AccessOption"/>
-                        <RadioButton
-                            x:Name="rbRdp"
-                            Margin="15 0 0 0"
-                            Content="RDP"
-                            IsChecked="{Binding IsRdp}"
-                            GroupName="AccessOption"/>
-                    </StackPanel>
+                        <StackPanel
+                            Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                            <RadioButton
+                                x:Name="rbMsra"
+                                Content="MSRA"
+                                IsChecked="{Binding IsMsra}"
+                                GroupName="AccessOption"/>
+                            <RadioButton
+                                x:Name="rbRdp"
+                                Margin="15 0 0 0"
+                                Content="RDP"
+                                IsChecked="{Binding IsRdp}"
+                                GroupName="AccessOption"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Button
+                        x:Name="btnTrocarLoginServico"
+                        Command="{Binding TrocarLoginServicoCommand}"
+                        Content="🔑"
+                        ToolTip="Alterar credenciais / conta de serviço"
+                        Width="19"
+                        Height="19"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,6,6"
+                        Padding="0,0,0,0" />
                 </Grid>
             </TabItem>
 
