@@ -46,7 +46,7 @@ namespace OmniDesk.ViewModels
             _serviceAuthManager = svcAuthManager;
 
             AcessoRemoto = new AcessoRemotoViewModel(remoteAccessService, svcAuthManager, dialogService);
-            ComparadorGrupos = new ComparadorGruposViewModel(adService, grupoComparerService, svcAuthManager, dialogService);
+            ComparadorGrupos = new ComparadorGruposViewModel(adService, sapService, authManager, seniorService, svcAuthManager, grupoComparerService, dialogService);
             ConsultaAcessos = new ConsultaAcessosViewModel(adService, sapService, authManager, seniorService, svcAuthManager, dialogService);
         }
 

@@ -12,11 +12,14 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
 - **Gerenciamento Rápido**: Botão de chave (**🔑**) no canto inferior direito para troca e atualização de credenciais a qualquer momento.
 - Suporte a disparo instantâneo via tecla **Enter**.
 
-### 2. 👥 Comparador de Grupos do Active Directory
-- **Busca Rápida**: Consulte os grupos de qualquer usuário do domínio individualmente através do botão de lupa 🔍.
-- **Comparação Inteligente**: Compara dois usuários (Alvo vs Referência) e exibe com precisão **apenas os grupos que o usuário de referência possui e que faltam no usuário alvo**.
+### 2. 👥 Comparador de Acessos Multi-Origem (Active Directory, SAP e Senior)
+- **Comparação Inteligente de Acessos**: Compara dois usuários (Alvo vs Referência) e exibe com precisão **apenas os acessos, grupos, perfis ou telas que o usuário de referência possui e que faltam no usuário alvo**.
+- **Seleção Multi-Origem**:
+  - **AD**: Compara grupos de segurança e distribuição do Active Directory utilizando a conta de serviço.
+  - **SAP**: Compara perfis e roles atribuídos no SAP NetWeaver / ERP utilizando o ambiente atualmente ativo na aplicação.
+  - **Senior**: Compara telas e perfis de RH / SGU no Senior (Vetorh / ServiceNow).
 - **Filtro Instantâneo**: Janela de resultados com busca textual em tempo real sobre nome e descrição dos grupos.
-- **Execução com Conta de Serviço**: Realiza consultas seguras no AD utilizando a conta administrativa configurada com resolução dinâmica de domínio.
+- Suporte a disparo instantâneo via tecla **Enter**.
 
 ### 3. 🔑 Consulta de Acessos Multi-Ambiente (AD, Senior e SAP)
 - **Active Directory**: Consulta todos os grupos de segurança e distribuição do usuário no domínio via conta de serviço.

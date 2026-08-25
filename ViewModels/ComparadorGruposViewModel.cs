@@ -11,8 +11,11 @@ namespace OmniDesk.ViewModels
     public partial class ComparadorGruposViewModel : ObservableObject
     {
         private readonly IActiveDirectoryService _adService;
-        private readonly IGrupoComparerService _grupoComparerService;
+        private readonly ISapService _sapService;
+        private readonly ISapAuthManager _sapAuthManager;
+        private readonly ISeniorService _seniorService;
         private readonly IServiceAuthManager _serviceAuthManager;
+        private readonly IGrupoComparerService _grupoComparerService;
         private readonly IDialogService _dialogService;
 
         [ObservableProperty]
@@ -22,62 +25,33 @@ namespace OmniDesk.ViewModels
         private string _usuarioReferencia = string.Empty;
 
         [ObservableProperty]
+        private bool _isAdChecked = true;
+
+        [ObservableProperty]
+        private bool _isSapChecked;
+
+        [ObservableProperty]
+        private bool _isSeniorChecked;
+
+        [ObservableProperty]
         private bool _isBusy;
 
         public ComparadorGruposViewModel(
             IActiveDirectoryService adService,
-            IGrupoComparerService grupoComparerService,
+            ISapService sapService,
+            ISapAuthManager sapAuthManager,
+            ISeniorService seniorService,
             IServiceAuthManager serviceAuthManager,
+            IGrupoComparerService grupoComparerService,
             IDialogService dialogService)
         {
             _adService = adService;
-            _grupoComparerService = grupoComparerService;
+            _sapService = sapService;
+            _sapAuthManager = sapAuthManager;
+            _seniorService = seniorService;
             _serviceAuthManager = serviceAuthManager;
+            _grupoComparerService = grupoComparerService;
             _dialogService = dialogService;
-        }
-
-        [RelayCommand]
-        public async Task BuscarUsuarioAlvoAsync()
-        {
-            await BuscarUsuarioIndividualAsync(UsuarioAlvo);
-        }
-
-        [RelayCommand]
-        public async Task BuscarUsuarioReferenciaAsync()
-        {
-            await BuscarUsuarioIndividualAsync(UsuarioReferencia);
-        }
-
-        private async Task BuscarUsuarioIndividualAsync(string nomeUsuario)
-        {
-            if (string.IsNullOrWhiteSpace(nomeUsuario))
-            {
-                _dialogService.ShowWarning("Por favor, digite o nome do usuário.", "Aviso");
-                return;
-            }
-
-            IsBusy = true;
-            try
-            {
-                var creds = await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync();
-                if (creds == null) return;
-
-                List<Grupos> grupos = await _adService.ObterGruposDoUsuarioAsync(nomeUsuario.Trim(), creds);
-                _dialogService.ShowGruposWindow(grupos, $"Grupos de: {nomeUsuario.Trim()}", $"Origem: Active Directory");
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                _serviceAuthManager.InvalidarCredenciais();
-                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação AD");
-            }
-            catch (Exception ex)
-            {
-                _dialogService.ShowError(ex.Message, "Erro na Busca");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
         }
 
         [RelayCommand]
@@ -93,18 +67,46 @@ namespace OmniDesk.ViewModels
             }
 
             IsBusy = true;
+            string? ambienteAtualSap = null;
+
             try
             {
-                var creds = await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync();
-                if (creds == null) return;
+                List<Grupos> gruposUser;
+                List<Grupos> gruposRef;
 
-                Task<List<Grupos>> tarefaBuscaA = _adService.ObterGruposDoUsuarioAsync(userA, creds);
-                Task<List<Grupos>> tarefaBuscaRef = _adService.ObterGruposDoUsuarioAsync(userRef, creds);
+                if (IsAdChecked)
+                {
+                    var creds = await _serviceAuthManager.ObterOuSolicitarCredenciaisAsync();
+                    if (creds == null) return;
 
-                await Task.WhenAll(tarefaBuscaA, tarefaBuscaRef);
+                    gruposUser = await _adService.ObterGruposDoUsuarioAsync(userA, creds);
+                    gruposRef = await _adService.ObterGruposDoUsuarioAsync(userRef, creds);
+                }
+                else if (IsSapChecked)
+                {
+                    ambienteAtualSap = _sapAuthManager.UltimoAmbienteSelecionado?.Trim();
+                    if (string.IsNullOrWhiteSpace(ambienteAtualSap) || ambienteAtualSap.StartsWith("--"))
+                    {
+                        _dialogService.ShowWarning("Por favor, selecione um ambiente SAP na guia 'Acessos' antes de comparar.", "Aviso");
+                        return;
+                    }
 
-                List<Grupos> gruposUser = tarefaBuscaA.Result;
-                List<Grupos> gruposRef = tarefaBuscaRef.Result;
+                    SapUserSession? sessao = await _sapAuthManager.ObterOuSolicitarSessaoAsync(ambienteAtualSap, forcarDialogo: false);
+                    if (sessao == null) return;
+
+                    gruposUser = await _sapService.ObterPerfisDoUsuarioAsync(userA, sessao);
+                    gruposRef = await _sapService.ObterPerfisDoUsuarioAsync(userRef, sessao);
+                }
+                else if (IsSeniorChecked)
+                {
+                    gruposUser = await _seniorService.ObterGruposDoUsuarioAsync(userA);
+                    gruposRef = await _seniorService.ObterGruposDoUsuarioAsync(userRef);
+                }
+                else
+                {
+                    _dialogService.ShowWarning("Por favor, selecione um tipo de acesso para comparar.", "Aviso");
+                    return;
+                }
 
                 ComparacaoGruposResultado resultado = _grupoComparerService.CompararGrupos(userA, gruposUser, userRef, gruposRef);
 
@@ -112,8 +114,20 @@ namespace OmniDesk.ViewModels
             }
             catch (UnauthorizedAccessException ex)
             {
-                _serviceAuthManager.InvalidarCredenciais();
-                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação AD");
+                if (IsSapChecked && !string.IsNullOrWhiteSpace(ambienteAtualSap))
+                {
+                    _sapAuthManager.InvalidarSessao(ambienteAtualSap);
+                }
+                else if (IsAdChecked)
+                {
+                    _serviceAuthManager.InvalidarCredenciais();
+                }
+
+                _dialogService.ShowWarning(ex.Message, "Falha de Autenticação");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _dialogService.ShowInfo(ex.Message, "Usuário Não Encontrado");
             }
             catch (Exception ex)
             {

@@ -1,257 +1,274 @@
 <Window x:Class="OmniDesk.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OmniDesk"
-        mc:Ignorable="d"
-        Title="OmniDesk"
-        Height="180"
-        Width="290"
-        ResizeMode="NoResize">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:OmniDesk"
+		mc:Ignorable="d"
+		Title="OmniDesk"
+		Height="180"
+		Width="290"
+		ResizeMode="NoResize">
 
-    <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-    </Window.Resources>
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+	</Window.Resources>
 
-    <Grid>
+	<Grid>
 		<TabControl>
-            <!-- guia 1 -->
-            <TabItem
-                Header="Acesso remoto"
-                DataContext="{Binding AcessoRemoto}">
-                <Grid>
-                    <Grid
-                        RowDefinitions="26, 26, 26"
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Center">
+			<!-- guia 1 -->
+			<TabItem
+				Header="Acesso remoto"
+				DataContext="{Binding AcessoRemoto}">
+				<Grid>
+					<Grid
+						RowDefinitions="26, 26, 26"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center">
 
-                        <StackPanel
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Left">
-                            <Label
-                                Content="Insira o patrimônio ou IP" />
-                        </StackPanel>
+						<StackPanel
+							Orientation="Horizontal"
+							HorizontalAlignment="Left">
+							<Label
+								Content="Insira o patrimônio ou IP"/>
+						</StackPanel>
 
-                        <StackPanel
-                            Orientation="Horizontal"
-                            Grid.Row="1">
-                            <TextBox
-                                x:Name="txtConnect"
-                                Text="{Binding Destino, UpdateSourceTrigger=PropertyChanged}"
-                                Width="150"
-                                Margin="0 0 10 0">
-                                <TextBox.InputBindings>
-                                    <KeyBinding Key="Enter"
-                                        Command="{Binding ConectarCommand}"/>
-                                </TextBox.InputBindings>
-                            </TextBox>
-                            <Button
-                                x:Name="btnConnect"
-                                Content="Conectar"
-                                Command="{Binding ConectarCommand}"
-                                Width="62"
-                                Grid.Column="2"/>
-                        </StackPanel>
+						<StackPanel
+							Orientation="Horizontal"
+							Grid.Row="1">
+							<TextBox
+								x:Name="txtConnect"
+								Text="{Binding Destino, UpdateSourceTrigger=PropertyChanged}"
+								Width="150"
+								Margin="0 0 10 0">
+								<TextBox.InputBindings>
+									<KeyBinding Key="Enter"
+												Command="{Binding ConectarCommand}"/>
+								</TextBox.InputBindings>
+							</TextBox>
+							<Button
+								x:Name="btnConnect"
+								Content="Conectar"
+								Command="{Binding ConectarCommand}"
+								Width="62"
+								Grid.Column="2"/>
+						</StackPanel>
 
-                        <StackPanel
-                            Grid.Row="2"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Left">
-                            <RadioButton
-                                x:Name="rbMsra"
-                                Content="MSRA"
-                                IsChecked="{Binding IsMsra}"
-                                GroupName="AccessOption"/>
-                            <RadioButton
-                                x:Name="rbRdp"
-                                Margin="15 0 0 0"
-                                Content="RDP"
-                                IsChecked="{Binding IsRdp}"
-                                GroupName="AccessOption"/>
-                        </StackPanel>
-                    </Grid>
+						<StackPanel
+							Grid.Row="2"
+							Orientation="Horizontal"
+							HorizontalAlignment="Left">
+							<RadioButton
+								x:Name="rbMsra"
+								Content="MSRA"
+								IsChecked="{Binding IsMsra}"
+								GroupName="AccessOption"/>
+							<RadioButton
+								x:Name="rbRdp"
+								Margin="15 0 0 0"
+								Content="RDP"
+								IsChecked="{Binding IsRdp}"
+								GroupName="AccessOption"/>
+						</StackPanel>
+					</Grid>
 
-                    <Button
-                        x:Name="btnTrocarLoginServico"
-                        Command="{Binding TrocarLoginServicoCommand}"
-                        Content="🔑"
-                        ToolTip="Alterar credenciais / conta de serviço"
-                        Width="19"
-                        Height="19"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Margin="0,0,6,6"
-                        Padding="0,0,0,0" />
-                </Grid>
-            </TabItem>
+					<Button
+						x:Name="btnTrocarLoginServico"
+						Command="{Binding TrocarLoginServicoCommand}"
+						Content="🔑"
+						ToolTip="Alterar credenciais / conta de serviço"
+						Width="19"
+						Height="19"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Bottom"
+						Margin="0,0,6,6"
+						Padding="0,0,0,0"/>
+				</Grid>
+			</TabItem>
 
-            <!-- guia 2 -->
-            <TabItem
-                Header="Acessos"
-                DataContext="{Binding ConsultaAcessos}">
-                <Grid
-                    RowDefinitions="26, 26, 26, Auto"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
+			<!-- guia 2 -->
+			<TabItem
+				Header="Acessos"
+				DataContext="{Binding ConsultaAcessos}">
+				<Grid
+					RowDefinitions="26, 26, 26, Auto"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center">
 
-                    <StackPanel
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left">
-                        <Label
-                            Content="Insira o usuário"/>
-                    </StackPanel>
-
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Grid.Row="1">
-                        <TextBox
-                            x:Name="txtUsuarioAcesso"
-                            Text="{Binding Usuario, UpdateSourceTrigger=PropertyChanged}"
-                            Width="150"
-                            Margin="0 0 10 0">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Enter"
-                                        Command="{Binding ConsultarCommand}"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button
-                            x:Name="btnConsultarAcesso"
-                            Content="Consultar"
-                            Command="{Binding ConsultarCommand}"
-                            Width="62"/>
-                    </StackPanel>
-
-                    <StackPanel
-                        Grid.Row="2"
-                        Orientation="Horizontal"
+					<StackPanel
+						Orientation="Horizontal"
 						HorizontalAlignment="Left">
+						<Label
+							Content="Insira o usuário"/>
+					</StackPanel>
+
+					<StackPanel
+						Orientation="Horizontal"
+						Grid.Row="1">
+						<TextBox
+							x:Name="txtUsuarioAcesso"
+							Text="{Binding Usuario, UpdateSourceTrigger=PropertyChanged}"
+							Width="150"
+							Margin="0 0 10 0">
+							<TextBox.InputBindings>
+								<KeyBinding Key="Enter"
+											Command="{Binding ConsultarCommand}"/>
+							</TextBox.InputBindings>
+						</TextBox>
+						<Button
+							x:Name="btnConsultarAcesso"
+							Content="Consultar"
+							Command="{Binding ConsultarCommand}"
+							Width="62"/>
+					</StackPanel>
+
+					<StackPanel
+						Grid.Row="2"
+						Orientation="Horizontal"
+						HorizontalAlignment="Left">
+						<RadioButton
+							x:Name="rbAcessoAD"
+							Content="Grupos AD"
+							IsChecked="{Binding IsAdChecked}"
+							GroupName="TipoAcesso"/>
+						<RadioButton
+							x:Name="rbAcessoSenior"
+							Margin="10 0 0 0"
+							Content="Senior"
+							IsChecked="{Binding IsSeniorChecked}"
+							GroupName="TipoAcesso"/>
+						<RadioButton
+							x:Name="rbAcessoSAP"
+							Margin="10 0 0 0"
+							Content="SAP"
+							IsChecked="{Binding IsSapChecked}"
+							GroupName="TipoAcesso"/>
+					</StackPanel>
+
+					<Grid
+						x:Name="pnlAmbienteSap"
+						Grid.Row="3"
+						Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="188"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<ComboBox
+							x:Name="cboSapAmbienteAcesso"
+							ItemsSource="{Binding Ambientes}"
+							SelectedItem="{Binding AmbienteSelecionado}"
+							Text="{Binding AmbienteSelecionado}"
+							IsEditable="True"
+							Height="24"
+							VerticalContentAlignment="Center"
+							ToolTip="Selecione ou digite o ambiente SAP"/>
+						<Button
+							x:Name="btnTrocarLoginSap"
+							Command="{Binding TrocarLoginSapCommand}"
+							Grid.Column="1"
+							Content="🔑"
+							ToolTip="Alterar credenciais / conta deste ambiente"
+							Width="28"
+							Height="24"
+							Margin="6 0 0 0"/>
+					</Grid>
+				</Grid>
+			</TabItem>
+
+			<!-- guia 3 -->
+			<TabItem
+				Header="Comparar"
+				DataContext="{Binding ComparadorGrupos}">
+				<Grid
+					RowDefinitions="*, *, *"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center">
+
+					<StackPanel
+						Orientation="Horizontal">
+						<Label
+							Content="Usuário"
+							Width="50"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Center"/>
+						<TextBox
+							x:Name="txtUserA"
+							Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}"
+							Margin="1 2 2 1"
+							Width="135"
+							Height="26">
+							<TextBox.InputBindings>
+								<KeyBinding
+									Key="Enter"
+									Command="{Binding CompararCommand}"/>
+							</TextBox.InputBindings>
+						</TextBox>
+					</StackPanel>
+
+					<StackPanel
+						Orientation="Horizontal"
+						Grid.Row="1"
+						Margin="0 0 0 2">
+						<Label
+							Content="Ref."
+							Width="50"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+						<TextBox
+							x:Name="txtUserB"
+							Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}"
+							Margin="1,2,28,1"
+							Width="135"
+							Height="26">
+							<TextBox.InputBindings>
+								<KeyBinding
+									Key="Enter"
+									Command="{Binding CompararCommand}"/>
+							</TextBox.InputBindings>
+						</TextBox>
+
+					</StackPanel>
+
+					<Button
+						x:Name="btnComparar"
+						Command="{Binding CompararCommand}"
+						Content="Comparar"
+						Grid.Row="2"
+						Height="26"
+						Width="58"
+						UseLayoutRounding="False"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						Margin="0,0,2,0"/>
+
+					<StackPanel
+						Grid.Row="2"
+						Orientation="Horizontal"
+						VerticalAlignment="Center">
+						<RadioButton
+							x:Name="rbCompararAD"
+							Margin="2 0 0 0"
+							Content="AD"
+							GroupName="TipoComparacao"
+							IsChecked="{Binding IsAdChecked}"/>
+
+						<RadioButton
+							x:Name="rbCompararSenior"
+							Content="Senior"
+                            Margin="11 0 7 0"
+							GroupName="TipoComparacao"
+							IsChecked="{Binding IsSeniorChecked}"/>
+
                         <RadioButton
-                            x:Name="rbAcessoAD"
-                            Content="Grupos AD"
-                            IsChecked="{Binding IsAdChecked}"
-                            GroupName="TipoAcesso"/>
-                        <RadioButton
-                            x:Name="rbAcessoSenior"
-                            Margin="10 0 0 0"
-                            Content="Senior"
-                            IsChecked="{Binding IsSeniorChecked}"
-                            GroupName="TipoAcesso"/>
-                        <RadioButton
-                            x:Name="rbAcessoSAP"
-                            Margin="10 0 0 0"
+                            x:Name="rbCompararSAP"
                             Content="SAP"
-                            IsChecked="{Binding IsSapChecked}"
-                            GroupName="TipoAcesso"/>
+                            GroupName="TipoComparacao"
+                            IsChecked="{Binding IsSapChecked}" />
                     </StackPanel>
 
-                    <Grid
-                        x:Name="pnlAmbienteSap"
-                        Grid.Row="3"
-                        Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="188"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox
-                            x:Name="cboSapAmbienteAcesso"
-                            ItemsSource="{Binding Ambientes}"
-                            SelectedItem="{Binding AmbienteSelecionado}"
-                            Text="{Binding AmbienteSelecionado}"
-                            IsEditable="True"
-                            Height="24"
-                            VerticalContentAlignment="Center"
-                            ToolTip="Selecione ou digite o ambiente SAP"/>
-                        <Button
-                            x:Name="btnTrocarLoginSap"
-                            Command="{Binding TrocarLoginSapCommand}"
-                            Grid.Column="1"
-                            Content="🔑"
-                            ToolTip="Alterar credenciais / conta deste ambiente"
-                            Width="28"
-                            Height="24"
-                            Margin="6 0 0 0"/>
-                    </Grid>
-                </Grid>
-            </TabItem>
+				</Grid>
+			</TabItem>
 
-            <!-- guia 3 -->
-            <TabItem
-                Header="Comparar"
-                DataContext="{Binding ComparadorGrupos}">
-                <Grid
-                    RowDefinitions="*, *, *"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <Label
-                            Content="Usuário"
-                            Width="50"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"/>
-                        <TextBox
-                            x:Name="txtUserA"
-                            Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="1 2 2 1"
-                            Width="135"
-                            Height="26">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Enter"
-                                        Command="{Binding BuscarUsuarioAlvoCommand}"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button
-                            x:Name="btnSearchA"
-                            Command="{Binding BuscarUsuarioAlvoCommand}"
-                            Content="🔍"
-                            ToolTip="Procurar"
-                            FontSize="16"
-                            Margin="1 2 2 1"/>
-                    </StackPanel>
-
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Grid.Row="1">
-
-                        <Label
-                            Content="Ref."
-                            Width="50"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
-                        <TextBox
-                            x:Name="txtUserB"
-                            Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="1,2,2,1"
-                            Width="135"
-                            Height="26">
-                            <TextBox.InputBindings>
-                                <KeyBinding
-                                    Key="Enter"
-                                    Command="{Binding BuscarUsuarioReferenciaCommand}"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <Button
-                            x:Name="btnSearchB"
-                            Command="{Binding BuscarUsuarioReferenciaCommand}"
-                            Content="🔍"
-                            ToolTip="Procurar"
-                            FontSize="16"
-                            Margin="1 2 2 1"/>
-                    </StackPanel>
-
-                    <Button
-                        x:Name="btnComparar"
-                        Command="{Binding CompararCommand}"
-                        Content="Comparar"
-                        Grid.Row="2"
-                        Height="26"
-                        Width="65"
-                        Margin="0,5,0,0"/>
-                </Grid>
-            </TabItem>
-
-        </TabControl>
-    </Grid>
+		</TabControl>
+	</Grid>
 </Window>
