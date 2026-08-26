@@ -116,6 +116,14 @@ O executável independente, autocontido e sem dependências externas será gerad
 
 ---
 
+## 🤝 Contribuição e Guia do Desenvolvedor
+
+Deseja contribuir com o OmniDesk ou adicionar novas funções, utilitários ou integrações? Consulte o nosso guia completo de desenvolvimento:
+
+👉 **[Guia de Arquitetura e Contribuição (CONTRIBUTING.md)](CONTRIBUTING.md)**
+
+---
+
 ## 📄 Licença
 
 Este projeto está licenciado sob a licença GNU General Public License v3.0 (GPL-3.0). Consulte o arquivo [LICENSE](LICENSE) para mais informações.
