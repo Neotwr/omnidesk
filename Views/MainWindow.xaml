@@ -19,7 +19,7 @@
 		<TabControl>
 			<!--  guia 1  -->
 			<TabItem DataContext="{Binding AcessoRemoto}"
-					Header="Acesso remoto">
+					 Header="Acesso remoto">
 				<Grid>
 					<Grid
 						HorizontalAlignment="Center"
@@ -27,12 +27,12 @@
 						RowDefinitions="26, 26, 26">
 
 						<StackPanel HorizontalAlignment="Left"
-								Orientation="Horizontal">
+									Orientation="Horizontal">
 							<Label Content="Insira o patrimônio ou IP"/>
 						</StackPanel>
 
 						<StackPanel Grid.Row="1"
-								Orientation="Horizontal">
+									Orientation="Horizontal">
 							<TextBox
 								x:Name="txtConnect"
 								Width="150"
@@ -40,7 +40,7 @@
 								Text="{Binding Destino, UpdateSourceTrigger=PropertyChanged}">
 								<TextBox.InputBindings>
 									<KeyBinding Key="Enter"
-											Command="{Binding ConectarCommand}"/>
+												Command="{Binding ConectarCommand}"/>
 								</TextBox.InputBindings>
 							</TextBox>
 							<Button
@@ -85,19 +85,19 @@
 
 			<!--  guia 2  -->
 			<TabItem DataContext="{Binding ConsultaAcessos}"
-					Header="Acessos">
+					 Header="Acessos">
 				<Grid
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					RowDefinitions="26, 26, 26, Auto">
 
 					<StackPanel HorizontalAlignment="Left"
-							Orientation="Horizontal">
+								Orientation="Horizontal">
 						<Label Content="Insira o usuário"/>
 					</StackPanel>
 
 					<StackPanel Grid.Row="1"
-							Orientation="Horizontal">
+								Orientation="Horizontal">
 						<TextBox
 							x:Name="txtUsuarioAcesso"
 							Width="150"
@@ -105,7 +105,7 @@
 							Text="{Binding Usuario, UpdateSourceTrigger=PropertyChanged}">
 							<TextBox.InputBindings>
 								<KeyBinding Key="Enter"
-										Command="{Binding ConsultarCommand}"/>
+											Command="{Binding ConsultarCommand}"/>
 							</TextBox.InputBindings>
 						</TextBox>
 						<Button
@@ -170,7 +170,7 @@
 
 			<!--  guia 3  -->
 			<TabItem DataContext="{Binding ComparadorGrupos}"
-					Header="Comparar">
+					 Header="Comparar">
 				<Grid
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
@@ -190,7 +190,7 @@
 							Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}">
 							<TextBox.InputBindings>
 								<KeyBinding Key="Enter"
-										Command="{Binding CompararCommand}"/>
+											Command="{Binding CompararCommand}"/>
 							</TextBox.InputBindings>
 						</TextBox>
 					</StackPanel>
@@ -212,7 +212,7 @@
 							Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}">
 							<TextBox.InputBindings>
 								<KeyBinding Key="Enter"
-										Command="{Binding CompararCommand}"/>
+											Command="{Binding CompararCommand}"/>
 							</TextBox.InputBindings>
 						</TextBox>
 
@@ -260,38 +260,40 @@
 
 			<TabItem Header="Utils"
 					 DataContext="{Binding Utils}">
+				<ScrollViewer Style="{StaticResource ThinScrollViewerStyle}"
+					VerticalScrollBarVisibility="Auto"
+					HorizontalScrollBarVisibility="Disabled">
+					<StackPanel>
+						<TextBlock
+							Margin="0,3,0,2"
+							HorizontalAlignment="Center"
+							FontWeight="Bold"
+							Text="Utilitário"/>
 
-				<StackPanel>
-					<TextBlock
-						Margin="0,6,0,4"
-						HorizontalAlignment="Center"
-						FontWeight="Bold"
-						Text="Utilitário"/>
+						<UniformGrid
+							Margin="15,0,15,0"
+							Columns="3">
+							<UniformGrid.Resources>
+								<Style BasedOn="{StaticResource PainelButtonStyle}"
+									   TargetType="Button"/>
+							</UniformGrid.Resources>
 
-					<UniformGrid
-						Height="100"
-						Margin="15,0,15,0"
-						Columns="3">
-						<UniformGrid.Resources>
-							<Style BasedOn="{StaticResource PainelButtonStyle}"
-									TargetType="Button"/>
-						</UniformGrid.Resources>
+							<Button x:Name="btnGC"
+									Content="Gerenciar computador"
+									CommandParameter="compmgmt.msc"/>
+							<Button x:Name="btnAD"
+									Content="Active Directory"
+									CommandParameter="dsa.msc"/>
+							<Button x:Name="btnRDP"
+									Content="Remote Desktop"
+									CommandParameter="mstsc.exe"/>
+							<Button IsEnabled="False"/>
+							<Button IsEnabled="False"/>
+							<Button IsEnabled="False"/>
 
-						<Button x:Name="btnGC"
-								Content="Gerenciar computador"
-								CommandParameter="compmgmt.msc"/>
-						<Button x:Name="btnAD"
-								Content="Active Directory"
-								CommandParameter="dsa.msc"/>
-						<Button x:Name="btnRDP"
-								Content="Remote Desktop"
-								CommandParameter="mstsc.exe"/>
-						<Button IsEnabled="False"/>
-						<Button IsEnabled="False"/>
-						<Button IsEnabled="False"/>
-
-					</UniformGrid>
-				</StackPanel>
+						</UniformGrid>
+					</StackPanel>
+				</ScrollViewer>
 			</TabItem>
 		</TabControl>
 	</Grid>
