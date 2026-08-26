@@ -12,31 +12,35 @@
 	mc:Ignorable="d">
 
 	<Window.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+		<BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
 	</Window.Resources>
 
 	<Grid>
 		<TabControl>
 			<!--  guia 1  -->
-			<TabItem DataContext="{Binding AcessoRemoto}" Header="Acesso remoto">
+			<TabItem DataContext="{Binding AcessoRemoto}"
+					Header="Acesso remoto">
 				<Grid>
 					<Grid
 						HorizontalAlignment="Center"
 						VerticalAlignment="Center"
 						RowDefinitions="26, 26, 26">
 
-						<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-							<Label Content="Insira o patrimônio ou IP" />
+						<StackPanel HorizontalAlignment="Left"
+								Orientation="Horizontal">
+							<Label Content="Insira o patrimônio ou IP"/>
 						</StackPanel>
 
-						<StackPanel Grid.Row="1" Orientation="Horizontal">
+						<StackPanel Grid.Row="1"
+								Orientation="Horizontal">
 							<TextBox
 								x:Name="txtConnect"
 								Width="150"
 								Margin="0,0,10,0"
 								Text="{Binding Destino, UpdateSourceTrigger=PropertyChanged}">
 								<TextBox.InputBindings>
-									<KeyBinding Key="Enter" Command="{Binding ConectarCommand}" />
+									<KeyBinding Key="Enter"
+											Command="{Binding ConectarCommand}"/>
 								</TextBox.InputBindings>
 							</TextBox>
 							<Button
@@ -44,7 +48,7 @@
 								Grid.Column="2"
 								Width="62"
 								Command="{Binding ConectarCommand}"
-								Content="Conectar" />
+								Content="Conectar"/>
 						</StackPanel>
 
 						<StackPanel
@@ -55,13 +59,13 @@
 								x:Name="rbMsra"
 								Content="MSRA"
 								GroupName="AccessOption"
-								IsChecked="{Binding IsMsra}" />
+								IsChecked="{Binding IsMsra}"/>
 							<RadioButton
 								x:Name="rbRdp"
 								Margin="15,0,0,0"
 								Content="RDP"
 								GroupName="AccessOption"
-								IsChecked="{Binding IsRdp}" />
+								IsChecked="{Binding IsRdp}"/>
 						</StackPanel>
 					</Grid>
 
@@ -75,36 +79,40 @@
 						VerticalAlignment="Bottom"
 						Command="{Binding TrocarLoginServicoCommand}"
 						Content="🔑"
-						ToolTip="Alterar credenciais / conta de serviço" />
+						ToolTip="Alterar credenciais / conta de serviço"/>
 				</Grid>
 			</TabItem>
 
 			<!--  guia 2  -->
-			<TabItem DataContext="{Binding ConsultaAcessos}" Header="Acessos">
+			<TabItem DataContext="{Binding ConsultaAcessos}"
+					Header="Acessos">
 				<Grid
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					RowDefinitions="26, 26, 26, Auto">
 
-					<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-						<Label Content="Insira o usuário" />
+					<StackPanel HorizontalAlignment="Left"
+							Orientation="Horizontal">
+						<Label Content="Insira o usuário"/>
 					</StackPanel>
 
-					<StackPanel Grid.Row="1" Orientation="Horizontal">
+					<StackPanel Grid.Row="1"
+							Orientation="Horizontal">
 						<TextBox
 							x:Name="txtUsuarioAcesso"
 							Width="150"
 							Margin="0,0,10,0"
 							Text="{Binding Usuario, UpdateSourceTrigger=PropertyChanged}">
 							<TextBox.InputBindings>
-								<KeyBinding Key="Enter" Command="{Binding ConsultarCommand}" />
+								<KeyBinding Key="Enter"
+										Command="{Binding ConsultarCommand}"/>
 							</TextBox.InputBindings>
 						</TextBox>
 						<Button
 							x:Name="btnConsultarAcesso"
 							Width="62"
 							Command="{Binding ConsultarCommand}"
-							Content="Consultar" />
+							Content="Consultar"/>
 					</StackPanel>
 
 					<StackPanel
@@ -115,19 +123,19 @@
 							x:Name="rbAcessoAD"
 							Content="Grupos AD"
 							GroupName="TipoAcesso"
-							IsChecked="{Binding IsAdChecked}" />
+							IsChecked="{Binding IsAdChecked}"/>
 						<RadioButton
 							x:Name="rbAcessoSenior"
 							Margin="10,0,0,0"
 							Content="Senior"
 							GroupName="TipoAcesso"
-							IsChecked="{Binding IsSeniorChecked}" />
+							IsChecked="{Binding IsSeniorChecked}"/>
 						<RadioButton
 							x:Name="rbAcessoSAP"
 							Margin="10,0,0,0"
 							Content="SAP"
 							GroupName="TipoAcesso"
-							IsChecked="{Binding IsSapChecked}" />
+							IsChecked="{Binding IsSapChecked}"/>
 					</StackPanel>
 
 					<Grid
@@ -135,8 +143,8 @@
 						Grid.Row="3"
 						Visibility="{Binding IsSapChecked, Converter={StaticResource BoolToVisConverter}}">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="188" />
-							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="188"/>
+							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
 						<ComboBox
 							x:Name="cboSapAmbienteAcesso"
@@ -146,7 +154,7 @@
 							ItemsSource="{Binding Ambientes}"
 							SelectedItem="{Binding AmbienteSelecionado}"
 							Text="{Binding AmbienteSelecionado}"
-							ToolTip="Selecione ou digite o ambiente SAP" />
+							ToolTip="Selecione ou digite o ambiente SAP"/>
 						<Button
 							x:Name="btnTrocarLoginSap"
 							Grid.Column="1"
@@ -155,13 +163,14 @@
 							Margin="6,0,0,0"
 							Command="{Binding TrocarLoginSapCommand}"
 							Content="🔑"
-							ToolTip="Alterar credenciais / conta deste ambiente" />
+							ToolTip="Alterar credenciais / conta deste ambiente"/>
 					</Grid>
 				</Grid>
 			</TabItem>
 
 			<!--  guia 3  -->
-			<TabItem DataContext="{Binding ComparadorGrupos}" Header="Comparar">
+			<TabItem DataContext="{Binding ComparadorGrupos}"
+					Header="Comparar">
 				<Grid
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
@@ -172,7 +181,7 @@
 							Width="50"
 							HorizontalAlignment="Center"
 							VerticalAlignment="Center"
-							Content="Usuário" />
+							Content="Usuário"/>
 						<TextBox
 							x:Name="txtUserA"
 							Width="135"
@@ -180,7 +189,8 @@
 							Margin="1,2,2,1"
 							Text="{Binding UsuarioAlvo, UpdateSourceTrigger=PropertyChanged}">
 							<TextBox.InputBindings>
-								<KeyBinding Key="Enter" Command="{Binding CompararCommand}" />
+								<KeyBinding Key="Enter"
+										Command="{Binding CompararCommand}"/>
 							</TextBox.InputBindings>
 						</TextBox>
 					</StackPanel>
@@ -193,7 +203,7 @@
 							Width="50"
 							HorizontalAlignment="Center"
 							VerticalAlignment="Center"
-							Content="Ref." />
+							Content="Ref."/>
 						<TextBox
 							x:Name="txtUserB"
 							Width="135"
@@ -201,7 +211,8 @@
 							Margin="1,2,28,1"
 							Text="{Binding UsuarioReferencia, UpdateSourceTrigger=PropertyChanged}">
 							<TextBox.InputBindings>
-								<KeyBinding Key="Enter" Command="{Binding CompararCommand}" />
+								<KeyBinding Key="Enter"
+										Command="{Binding CompararCommand}"/>
 							</TextBox.InputBindings>
 						</TextBox>
 
@@ -217,7 +228,7 @@
 						VerticalAlignment="Center"
 						Command="{Binding CompararCommand}"
 						Content="Comparar"
-						UseLayoutRounding="False" />
+						UseLayoutRounding="False"/>
 
 					<StackPanel
 						Grid.Row="2"
@@ -228,51 +239,56 @@
 							Margin="2,0,0,0"
 							Content="AD"
 							GroupName="TipoComparacao"
-							IsChecked="{Binding IsAdChecked}" />
+							IsChecked="{Binding IsAdChecked}"/>
 
 						<RadioButton
 							x:Name="rbCompararSenior"
 							Margin="11,0,7,0"
 							Content="Senior"
 							GroupName="TipoComparacao"
-							IsChecked="{Binding IsSeniorChecked}" />
+							IsChecked="{Binding IsSeniorChecked}"/>
 
 						<RadioButton
 							x:Name="rbCompararSAP"
 							Content="SAP"
 							GroupName="TipoComparacao"
-							IsChecked="{Binding IsSapChecked}" />
+							IsChecked="{Binding IsSapChecked}"/>
 					</StackPanel>
 
 				</Grid>
 			</TabItem>
 
-			<TabItem Header="Utils">
+			<TabItem Header="Utils"
+					 DataContext="{Binding Utils}">
 
 				<StackPanel>
 					<TextBlock
 						Margin="0,6,0,4"
 						HorizontalAlignment="Center"
 						FontWeight="Bold"
-						Text="Utilitário" />
+						Text="Utilitário"/>
 
 					<UniformGrid
 						Height="100"
 						Margin="15,0,15,0"
 						Columns="3">
 						<UniformGrid.Resources>
-							<Style BasedOn="{StaticResource PainelButtonStyle}" TargetType="Button" />
+							<Style BasedOn="{StaticResource PainelButtonStyle}"
+									TargetType="Button"/>
 						</UniformGrid.Resources>
 
-						<Button x:Name="btnGC" 
-                                Content="Gerenciar computador" />
-						<Button x:Name="btnAD" 
-                                Content="Active Directory" />
-						<Button x:Name="btnRDP" 
-                                Content="Remote Desktop" />
-						<Button IsEnabled="False" />
-						<Button IsEnabled="False" />
-						<Button IsEnabled="False" />
+						<Button x:Name="btnGC"
+								Content="Gerenciar computador"
+								CommandParameter="compmgmt.msc"/>
+						<Button x:Name="btnAD"
+								Content="Active Directory"
+								CommandParameter="dsa.msc"/>
+						<Button x:Name="btnRDP"
+								Content="Remote Desktop"
+								CommandParameter="mstsc.exe"/>
+						<Button IsEnabled="False"/>
+						<Button IsEnabled="False"/>
+						<Button IsEnabled="False"/>
 
 					</UniformGrid>
 				</StackPanel>
