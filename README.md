@@ -1,5 +1,9 @@
 # OmniDesk
 
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/)
+[![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+
 Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** com padrão de arquitetura **MVVM Moderno (`CommunityToolkit.Mvvm`)**, projetada para otimizar e acelerar as atividades operacionais de suporte e sustentação de TI.
 
 ---
@@ -33,18 +37,27 @@ Aplicação utilitária para Windows desenvolvida em **C# / .NET 10** e **WPF** 
   - **Suporte Multi-Ambiente**: Permite alternar facilmente entre ambientes (Produção, Qualidade, Desenvolvimento, etc.) com sessões isoladas por servidor.
   - **Armazenamento Seguro (DPAPI)**: Opção de salvar credenciais com criptografia nativa do Windows (`ProtectedData`), garantindo que senhas nunca sejam salvas em texto plano.
 
+### 4. 🛠️ Painel de Utilitários de Administração (Utils)
+- **Lançador Rápido de Ferramentas Administrativas**: Acesso centralizado com um clique para ferramentas operacionais do Windows:
+  - **Gerenciamento do Computador** (`compmgmt.msc`)
+  - **Active Directory Users and Computers** (`dsa.msc`)
+  - **Área de Trabalho Remota** (`mstsc.exe`)
+- **Execução com Credenciais de Serviço**: Inicialização transparente de consoles de gerenciamento (.msc via MMC) e executáveis utilizando as credenciais da conta de serviço (`CreateProcessWithLogonW`), eliminando a necessidade de "Executar como outro usuário" manualmente.
+- **Interface Otimizada**: Painel em grade com suporte a barras de rolagem finas e personalizadas (`ThinScrollViewerStyle`).
+
 ---
 
 ## 🏛️ Arquitetura e Tecnologias
 
 - **Framework**: [.NET 10.0 (Windows)](https://dotnet.microsoft.com/download)
-- **Interface**: WPF (Windows Presentation Foundation)
+- **Interface**: WPF (Windows Presentation Foundation) com estilos e scrollbars customizadas
 - **Padrão de Projeto**: MVVM Moderno com `CommunityToolkit.Mvvm` (Source Generators, `ObservableProperty`, `RelayCommand`)
 - **Integração Active Directory**: `System.DirectoryServices.AccountManagement` com credenciais dinâmicas
 - **Integração Senior / WBS**: `Microsoft.Web.WebView2` com SSO transparente e execução de requisições assíncronas isoladas
 - **Integração SAP**: SAP .NET Connector 3.0 x64 via `SapLoadContext` compatível com CoreCLR .NET 10
+- **Execução de Processos e Logon**: `ProcessLogonHelper` via Win32 `advapi32.dll` (`CreateProcessWithLogonW`)
 - **Segurança e Cofre de Credenciais**:
-  - `ServiceAuthManager`: Gerenciamento centralizado de conta de serviço para AD, Comparador e Acesso Remoto.
+  - `ServiceAuthManager`: Gerenciamento centralizado de conta de serviço para AD, Comparador, Acesso Remoto e Utilitários.
   - Criptografia de credenciais via Windows DPAPI (`System.Security.Cryptography.ProtectedData`).
   - Configurações corporativas embutidas em memória (`EmbeddedResource`) via `appsettings.json`, sem gerar arquivos extras na pasta do executável e com isolamento total no Git para evitar exposição de URLs internas.
 
