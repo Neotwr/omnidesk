@@ -128,6 +128,12 @@ namespace OmniDesk.ViewModels
             IsBusy = true;
             string? ambienteAtual = null;
 
+            if (usuarioAlvo.Contains('@'))
+            {
+                int posi = usuarioAlvo.IndexOf('@');
+                usuarioAlvo = usuarioAlvo.Substring(0, posi);
+            }
+
             try
             {
                 if (IsAdChecked)
