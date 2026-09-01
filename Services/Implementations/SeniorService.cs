@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace OmniDesk.Services.Implementations
 	{
 		private readonly IAppConfigService _configService;
 		private WebView2? _webView;
+		private uint _browserProcessId;
 		private bool _isSessionReady;
 		private readonly SemaphoreSlim _sessionLock = new(1, 1);
 
@@ -72,18 +74,22 @@ namespace OmniDesk.Services.Implementations
 				}
 			}
 
-			string userDataFolder = Path.Combine(
-				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-				"OmniDesk"
-			);
-
-			var options = new CoreWebView2EnvironmentOptions
+			if (_webView.CoreWebView2 == null)
 			{
-				AllowSingleSignOnUsingOSPrimaryAccount = true
-			};
+				string userDataFolder = Path.Combine(
+					Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+					"OmniDesk"
+				);
 
-			var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder, options);
-			await _webView.EnsureCoreWebView2Async(env);
+				var options = new CoreWebView2EnvironmentOptions
+				{
+					AllowSingleSignOnUsingOSPrimaryAccount = true
+				};
+
+				var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder, options);
+				await _webView.EnsureCoreWebView2Async(env);
+				_browserProcessId = _webView.CoreWebView2?.BrowserProcessId ?? 0;
+			}
 
 			string baseUrl = _configService.WbsSettings.BaseUrl.TrimEnd('/');
 			string ssoId = _configService.WbsSettings.SsoId;
@@ -395,6 +401,60 @@ namespace OmniDesk.Services.Implementations
 			{
 				_webView.WebMessageReceived -= Handler;
 			}
+		}
+
+		public void Dispose()
+		{
+			try
+			{
+				uint pid = _browserProcessId;
+				if (pid == 0 && _webView?.CoreWebView2 != null)
+				{
+					try
+					{
+						pid = _webView.CoreWebView2.BrowserProcessId;
+					}
+					catch { }
+				}
+
+				if (_webView != null)
+				{
+					if (Application.Current?.Dispatcher != null && !Application.Current.Dispatcher.CheckAccess())
+					{
+						Application.Current.Dispatcher.Invoke(() =>
+						{
+							_webView?.Dispose();
+							_webView = null;
+						});
+					}
+					else
+					{
+						_webView.Dispose();
+						_webView = null;
+					}
+				}
+
+				if (pid > 0)
+				{
+					try
+					{
+						using var proc = Process.GetProcessById((int)pid);
+						if (!proc.HasExited)
+						{
+							if (!proc.WaitForExit(1000))
+							{
+								proc.Kill(entireProcessTree: true);
+							}
+						}
+					}
+					catch (ArgumentException)
+					{
+						// Processo já finalizou
+					}
+					catch { }
+				}
+			}
+			catch { }
 		}
 	}
 }

@@ -7,7 +7,7 @@ using OmniDesk.Services.Implementations;
 
 namespace OmniDesk.ViewModels
 {
-	public partial class MainViewModel : ObservableObject
+	public partial class MainViewModel : ObservableObject, IDisposable
 	{
 		public AcessoRemotoViewModel AcessoRemoto { get; }
 		public ComparadorGruposViewModel ComparadorGrupos { get; }
@@ -76,6 +76,11 @@ namespace OmniDesk.ViewModels
 					// Falhas transitórias na inicialização prévia serão tratadas sob demanda caso o usuário consulte
 				}
 			});
+		}
+
+		public void Dispose()
+		{
+			_seniorService.Dispose();
 		}
 	}
 }

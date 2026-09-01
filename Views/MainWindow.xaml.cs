@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using OmniDesk.ViewModels;
 
 namespace OmniDesk.Views
@@ -25,6 +25,12 @@ namespace OmniDesk.Views
 
         protected override void OnClosed(EventArgs e)
         {
+            try
+            {
+                ViewModel.Dispose();
+            }
+            catch { }
+
             base.OnClosed(e);
             Environment.Exit(0);
         }
